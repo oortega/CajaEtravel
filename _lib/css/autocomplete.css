@@ -1,0 +1,5 @@
+.ui-autocomplete { position: relative; z-index: 6; width:358px !important; background: #eee; color:#FFF; font-size:11px; font-family:Tahoma, Arial, Verdana; margin:0px; padding:0px; border:1px dotted #d4aa00; text-align:left; } 
+.ui-autocomplete .ui-menu-item { list-style:none; }
+.ui-autocomplete .ui-menu-item  a{ display:inline-block; color:#806600; padding:3px 3px; width:352px; cursor:pointer; line-height:15px; border-bottom:1px dotted #d4aa00; }
+.ui-autocomplete .ui-menu-item  a:hover { color:#283D47; }
+.ui-helper-hidden-accessible {display: none;}
