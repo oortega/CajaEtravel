@@ -50,3 +50,17 @@
 .etWContainer .etWLarge span {background: no-repeat url('../img/select-large.png');}
 .etWContainer .etWMedium, .etWContainer .etWMedium select, .etWContainer .etWMedium span {width: 106px; height: 26px; line-height: 26px;}
 .etWContainer .etWMedium span {background: no-repeat url('../img/select-medium.png');}
+
+.datepick-ctrl { display:none !important; }
+
+.ui-datepicker .selectedDay a { background-color:#95B2CA; color: #fff; border: solid 1px #95B2CA;}
+
+.ui-datepicker .selectedFrom a{ line-height:20px; background: #3D91D7; color: #fff !important;  position: relative; text-indent: -7px;  }
+.ui-datepicker .selectedFrom a:after{content:""; position: absolute; top: 0; right:0; border-top: 10px solid #F9F9F9; border-bottom: 10px solid #F9F9F9; border-left: 9px solid transparent  }
+
+.ui-datepicker .selectedTo a{  line-height:20px; background: #3D91D7;  color: #fff !important; position: relative; text-indent: 3px; font-weight: bold}
+.ui-datepicker .selectedTo a:after{content:""; position: absolute; top: 0; left:0; border-top: 10px solid #F9F9F9; border-bottom: 10px solid #F9F9F9; border-right: 9px solid transparent  }
+
+
+
+.datepick-selected { background-color:#3F93D9 !important; color: #fff !important; border: solid 1px #3F93D9 !important; }
