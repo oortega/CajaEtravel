@@ -5,7 +5,8 @@ jQuery(document).ready(function(){
 
    
     //Configuraciones generales para los calendarios
-    if ( $("#formahotel").length === 1 ) DefVar("#formahotel"); else DefVar("#formapackage");
+   
+   if ( $("#formahotel").length === 1 ) DefVar("#formahotel"); else DefVar("#formapackage");
     // Se crea evento para ejecutar funciones despues que muestra el calendario
     $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
     $.datepicker._updateDatepicker = function(inst) {
@@ -17,23 +18,21 @@ jQuery(document).ready(function(){
 
     jQuery(".EtDateFromGN" ).datepicker({
         dateFormat: FormatO,
-        showOn: "both",
-        buttonImageOnly: true,
-        buttonText: "",
+      
         numberOfMonths: 2,
         showButtonPanel: true,
         minDate:0,
         maxDate:"+1y",
         beforeShowDay: RangoDias,
-        onClose: function(dates){ jQuery(this).parents('form').find(".EtDateToGN").show("slow").datepicker("show");},
+        onClose: function(dates){ jQuery(this).parents('form').find(".EtDateToGN").datepicker("show");},
         onSelect: OnSelectDate
         
 	});
     jQuery(".EtDateToGN").datepicker({
         dateFormat: FormatO,
-        showOn: "both",
+        /*showOn: "both",
         buttonImageOnly: true,
-        buttonText: "",
+        buttonText: "",*/
         numberOfMonths: 2,
         showButtonPanel: true,
         minDate:+1,
@@ -539,10 +538,12 @@ function NumeroNoches(date){
         inicionoches= jQuery('#'+Formanoches+' .EtDateFromGN').datepicker("getDate").getTime();
 
         noches=(fin-inicionoches)/864e5;
-    jQuery(".ui-datepicker-current").after("<span class='Noches' >"+noches+" Noches</span>");        
+   // jQuery(".ui-datepicker-current").after("<span class='Noches' >"+noches+" Noches</span>");        ui-datepicker-close
+   jQuery(".ui-datepicker-close").before("<span class='Noches' >"+noches+" Noches</span>");        
 }
 //Muestra numero de noches al pocisionar el mouse sobre un dia
 function NumeroNochesHover(){
+    //alert("hola");
    var datehover=$(this).parent().data(),//Se obtiene mes y año del dia seleccionado
         diahover=parseInt( $(this).html());
     var fechahover= new Date ( datehover.year,datehover.month, diahover );
