@@ -1,9 +1,5 @@
 jQuery(document).ready(function(){
-
-   
     CambiaPestanas('.etWContainer .etWtabs a','active','.etWContainer .etWforms .form');
-
-   
     //Configuraciones generales para los calendarios
    
    if ( $("#formahotel").length === 1 ) DefVar("#formahotel"); else DefVar("#formapackage");
@@ -27,7 +23,7 @@ jQuery(document).ready(function(){
         onClose: function(dates){ jQuery(this).parents('form').find(".EtDateToGN").datepicker("show");},
         onSelect: OnSelectDate
         
-	});
+    });
     jQuery(".EtDateToGN").datepicker({
         dateFormat: FormatO,
         /*showOn: "both",
@@ -80,16 +76,22 @@ jQuery(document).ready(function(){
                     return;
                 }
                 jQuery.ajax({
-                    url: "http://www.bestday.com.mx/searchservices/getSearchJson.aspx?Lenguaje="+IDioMA+"&ItemTypes=D:5,H:5&PalabraBuscada="+jQuery("#EtDestinyHtl").val(),
-                    dataType: "jsonp", 
-                    //---
-                    data: request,
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
+                    dataType: "jsonp",
+                    data: {
+                        Lenguaje: IDioMA,
+                        ItemTypes: "D:5,H:5",
+                        Filters:"",
+                        PalabraBuscada: request.term
+                    }
+                    ,
                     success: function(data) {
                         cacheDH[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
+            
             select: function(event, ui) {
                 //alert(ui.item.Label);
                     jQuery(this).val(ui.item.Label);
@@ -97,13 +99,16 @@ jQuery(document).ready(function(){
                     if(ui.item.Type=="H"){ jQuery("#EtHt").val(ui.item.TypeID); jQuery("#formahotel").attr('action','http://www.e-tsw.com.mx/Hoteles/Tarifas'); }
                     else { jQuery("#EtHt").val(""); jQuery("#formahotel").attr('action','http://www.e-tsw.com.mx/Hoteles/Lista'); }
                     jQuery("#EtCt").val(ui.item.Country);
+                    jQuery("#formahotel .EtDateFromGN").focus();
                     return false;
+
             } 
         });
        
     }
     // Config de form paquetes
     if ($("#formapackage").length === 1) {
+        
         jQuery("#formapackage").submit(function(){ return(ValidateFLPK('formapackage','dn')); });       
         jQuery("#formapackage").submit(function(){ return(restrict45Days('formapackage')); });  
         jQuery("#formapackage").submit(function(){ return(restrictPack8People()); });   
@@ -124,25 +129,33 @@ jQuery(document).ready(function(){
                     return;
                 }
                 jQuery.ajax({
-                    url: "http://partners.clickhotels.com/AJAX/AirportsJSONP?idioma="+IDioMA,
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
-                    data: request,
+                    data: {
+                        Lenguaje: IDioMA,
+                        ItemTypes: "A:10",
+                        Filters:"",
+                        PalabraBuscada: request.term
+                    }
+                    ,
                     success: function(data) {
-                        cachePQ[request.term] = data;
-                        response(data);
+                        cachePQ[request.term] = data.results;
+                        response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
-                jQuery("#EtCityOrig").val(ui.item.desc);
-                jQuery("#EtIATAob").val(ui.item.id);
+                jQuery("#EtCityOrig").val(ui.item.Label);
+                jQuery("#EtIATAob").val(ui.item.TypeID);
+                jQuery("#EtDestinyPkl").focus(); 
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             return jQuery("<li></li>")
                 .data("item.autocomplete", item)
-                .append(jQuery("<a></a>, ").text(item.desc))
+                .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
+                alert("hola");
         };
         //autocompletado destino paquetes
         jQuery("#EtDestinyPkl").autocomplete({
@@ -155,24 +168,32 @@ jQuery(document).ready(function(){
                     }
                     jQuery.ajax({
                         // Callback - JSONP
-                        url: "http://partners.clickhotels.com/AJAX/DestinationsJSONP?idioma="+IDioMA,
+                        
+                        url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                         dataType: "jsonp",
-                        data: request,
+                        data: {
+                            Lenguaje: IDioMA,
+                            ItemTypes: "P:10",
+                            Filters:"",
+                            PalabraBuscada: request.term
+                        },
                         success: function(data) {
-                                cacheD[request.term] = data;
-                                response(data);
+                                cacheD[request.term] = data.results;
+                                response(data.results);
                         }
                     });
                 },
                 select: function(event, ui) {
-                        jQuery("#EtDestinyPkl").val(ui.item.desc);
-                        jQuery("#EtdtPk").val(ui.item.dest_id);
+                        jQuery("#EtDestinyPkl").val(ui.item.Label);
+                        jQuery("#EtdtPk").val(ui.item.TypeID.split("|")[1]);
+                        jQuery("#EtIATds").val(ui.item.TypeID.split("|")[0]);
+                        jQuery("#formapackage .EtDateFromGN").focus();
                         return false;
-                }
+                },
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
                 return jQuery("<li></li>")
         .data("item.autocomplete", item)
-        .append(jQuery("<a></a>, ").text(item.desc))
+        .append(jQuery("<a></a>, ").text(item.Label))
         .appendTo(ul);
         };
    
@@ -203,25 +224,31 @@ jQuery(document).ready(function(){
                     return;
                 }
                 jQuery.ajax({
-                    url: "http://partners.clickhotels.com/AJAX/AirportsJSONP?idioma="+IDioMA,
+                    
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
-                    data: request,
+                    data: {
+                        Lenguaje: IDioMA,
+                        ItemTypes: "A:10",
+                        Filters:"",
+                        PalabraBuscada: request.term
+                    },
                     success: function(data) {
-                        cachePQ[request.term] = data;
-                        response(data);
+                        cachePQ[request.term] = data.results;
+                        response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
-                //alert("selection: " + ui.item.id + " : " + ui.item.desc_name + " : " + ui.item.desc);
-                jQuery("#EtCityOrigFL").val(ui.item.desc);
-                jQuery("#EtIATAobFl").val(ui.item.id);
+                //alert("selection: " + ui.item.TypeID + " : " + ui.item.Label_name + " : " + ui.item.Label);
+                jQuery("#EtCityOrigFL").val(ui.item.Label);
+                jQuery("#EtIATAobFl").val(ui.item.TypeID);
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             return jQuery("<li></li>")
                 .data("item.autocomplete", item)
-                .append(jQuery("<a></a>, ").text(item.desc))
+                .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
         };
         //autocompletado destino vuelos
@@ -234,81 +261,118 @@ jQuery(document).ready(function(){
                     return;
                 }
                 jQuery.ajax({
-                    url: "http://partners.clickhotels.com/AJAX/AirportsJSONP?idioma="+IDioMA,
+                    
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
-                    data: request,
+                    data: {
+                        PalabraBuscada: request.term,
+                        Lenguaje: "esp",
+                        ItemTypes: "A:10",
+                        Filters: "",
+                       
+                     },
                     success: function(data) {
-                        cachePQ[request.term] = data;
-                        response(data);
+                        cachePQ[request.term] = data.results;
+                        response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
-                jQuery("#EtDestinyFL").val(ui.item.desc);
-                jQuery("#EtIATAibFl").val(ui.item.id);
+                jQuery("#EtDestinyFL").val(ui.item.Label);
+                jQuery("#EtIATAibFl").val(ui.item.TypeID);
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             return jQuery("<li></li>")
                 .data("item.autocomplete", item)
-                .append(jQuery("<a></a>, ").text(item.desc))
+                .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
         }; 
 
 
     } 
     // Config de form autos
+
     if ($("#formacar").length === 1) { 
         jQuery('#formacar').submit(function(){ return(ValidateHotel('formacar','cityco',MsjDestinO,AltMsjDestinO)); });     
         jQuery('#formacar').submit(function(){ return(restrictCar30Days()); });
         jQuery('#formacar').submit(function(){ return(restrictCar24Hours()); });    
         //autocompletado origen autos
-        jQuery("input[name=nu]").autocomplete({
-            minLength: 3,
-            delay: 0,
-            source:  function( request, response ) {
-                var resultados=  jLinq.from(arrCars)
-                .contains("desc", request.term)
-                .select();
-                response(resultados);
-            }, 
+
+       jQuery("#cityco").autocomplete({
+            minLength: 2,
+            delay: 1000,
+            source: function(request, response) {
+                if (request.term in cacheA) {
+                    response(cacheA[request.term]);
+                    return;
+                }
+                jQuery.ajax({
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
+                    dataType: "jsonp",
+                    data: {
+                        Lenguaje: IDioMA,
+                        ItemTypes: "R:10",
+                        Filters:"",
+                        PalabraBuscada: request.term
+                    },
+                    success: function(data) {
+                        cacheA[request.term] = data.results;
+                        response(data.results);
+                    }
+                });
+            },
             select: function(event, ui) {
-                jQuery("input[name=nu]").val(ui.item.AuxText);
-                jQuery("#pu").val(ui.item.ID);
-                jQuery("#formacar input[name=no]").val(ui.item.AuxText);
-                jQuery("#do").val(ui.item.ID);
+                jQuery("#cityco").val(ui.item.Label);     
+                jQuery("#pu").val(ui.item.TypeID);           
+                jQuery("#cityib").val(ui.item.Label);
+                jQuery("#do").val(ui.item.TypeID);
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             return jQuery("<li></li>")
                 .data("item.autocomplete", item)
-                .append(jQuery("<a></a>, ").text(item.AuxText))
+                .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
+
         };
 
-
-        
+      
         //autocompletado destino autos
-        jQuery("#formacar input[name=no]").autocomplete({
-            minLength: 3,
-            delay: 0,
-            source:  function( request, response ) {
-                var resultados=  jLinq.from(arrCars)
-                .contains("desc", request.term)
-                .select();
-                response(resultados);
-            }, 
-            select: function(event, ui) {
-                jQuery("#formacar input[name=no]").val(ui.item.AuxText);
-                jQuery("#do").val(ui.item.ID);
+        jQuery("#cityib").autocomplete({
+            minLength: 2,
+            delay: 1000,
+            source: function(request, response) {
+                if (request.term in cacheA) {
+                    response(cacheA[request.term]);
+                    return;
+                }
+                jQuery.ajax({
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
+                    dataType: "jsonp",
+                    data: {
+                        Lenguaje: IDioMA,
+                        ItemTypes: "R:10",
+                        Filters:"",
+                        PalabraBuscada: request.term
+                    },
+                    success: function(data) {
+                        cacheA[request.term] = data.results;
+                        response(data.results);
+                    }
+                });
+            },
+            select: function(event, ui) {        
+                jQuery("#cityib").val(ui.item.Label);
+                jQuery("#do").val(ui.item.TypeID);
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             return jQuery("<li></li>")
                 .data("item.autocomplete", item)
-                .append(jQuery("<a></a>, ").text(item.AuxText))
+                .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
-        };  
+        };
         //Calendarios
         jQuery("#formacar .EtDateFromGN").datepicker("option", {minDate:1});
         jQuery("#formacar .EtDateToGN").datepicker("option", {minDate:+2});
@@ -349,9 +413,16 @@ jQuery(document).ready(function(){
                     return;
                 }
                 jQuery.ajax({
-                    url: "http://www.bestday.com.mx/searchservices/getSearchJson.aspx?Lenguaje="+IDioMA+"&ItemTypes=H:10&Filters=S|1&PalabraBuscada="+jQuery("#EtHotel").val(),
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
-                    /* data: request, */
+                    data: {
+
+                        PalabraBuscada: request.term,
+                        Lenguaje: IDioMA,
+                        ItemTypes: "H:10",
+                        Filters: "S|1"
+                        
+                    },
                     success: function(data) {
                         cacheT[request.term] = data.results;
                         response(data.results);
@@ -369,7 +440,8 @@ jQuery(document).ready(function(){
                 .data("item.autocomplete", item)
                 .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
-        };      
+        };  
+
         jQuery("#EtTypeId").change(function(){
             jQuery("#EtType").val(jQuery(this).children("option:selected").html());
             
@@ -387,6 +459,7 @@ var cachePQ = {};
 var cacheDH = {};
 var cacheD = {};
 var cacheT = {};
+var cacheA = {};
 
 /*Funciones para los calendarios*/
 function DefVar(obj)
@@ -494,12 +567,16 @@ function OnSelectDate(dateSel) {
     var dateFromInput=jQuery("#"+formId+" .EtDateFromGN");
     var dateToInput=jQuery("#"+formId+" .EtDateToGN");
     var newdate,dateFrom,dateTo;
+    console.log("ab");
      //ESTA SECCIÓN IDENTIFICA A QUE CALENDARIO SE LE DA CLICK
     if ( dtClass.indexOf('EtDateFromGN') >=0 ){
         dateFrom = jQuery(this).datepicker("getDate");
         dateTo = dateToInput.datepicker("getDate");  
         newdate=addDate(dateFrom,'+2', 'd'); //Nueva fecha para el input EtDateToGN
         if (dateFrom>=dateTo) {dateToInput.datepicker("setDate",newdate);} // Asignamos el nuevo valor al input EtDateToGN
+        //jQuery("#"+formId+" .EtDateToGN").focus();
+       // console.log(jQuery("#"+formId+" .EtDateToGN"));
+
     }
     else{
         dateFrom = dateFromInput.datepicker("getDate");
@@ -508,6 +585,8 @@ function OnSelectDate(dateSel) {
         if (dateTo<=dateFrom) {dateFromInput.datepicker("setDate",newdate); } // Asignamos el nuevo valor al input EtDateFromGN
        // NumeroNoches(dateFrom.getTime(), dateTo.getTime() );
     }
+
+     
 }
 
 // Asigna clases para el  sombreado del inicio y fin de una reservacion
@@ -556,7 +635,13 @@ function NumeroNochesHover(){
         jQuery(".Noches").text(noches+" Noches");  
     }   
 }
-
+function ValidateDate(forma){
+    if(jQuery('#'+forma+' .EtDateFromGN').val()==""||jQuery('#'+forma+' .EtDateToGN').val()=="")
+    {
+        alert(altMsjDate);
+        return(false);
+    }
+}
 /*Termina Calendarios*/
 
 /*Funciones Generales */
