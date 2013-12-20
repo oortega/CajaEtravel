@@ -8,6 +8,12 @@
     <meta name="description" content="Cajaetravel : Caja de Reservaciones E-travel Solution" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link href="_lib/css/resbox.css" rel="stylesheet" />
+    <link href="_lib/css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="_lib/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="_lib/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="_lib/js/jquery.datepicker-es-mx.js"></script>
+    <script type="text/javascript" src="_lib/js/etravel.js"></script>
 
     <title>Cajaetravel</title>
   </head>
@@ -32,39 +38,579 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <p>E-travel</p>
+        <h2>Caja Reservaciones Español</h2>
+        <div class="etWContainer">
+      <div class="etWtabs">
+        <a class="prim active" href="javascript:void(0);">Hotel</a>
+        <a href="javascript:void(0);">Hotel + Vuelo</a>
+        <a href="javascript:void(0);">Vuelo</a>
+        <a href="javascript:void(0);">Autos</a>
+        <a href="javascript:void(0);">Tours</a>
+        <a href="javascript:void(0);">Traslados</a>
+      </div>
+      <div class="etWforms">
+        <form accept-charset="UTF-8" id="formahotel" class="form" name="formahotel" method="post" action="http://www.e-tsw.com.mx/Hoteles/Lista">
+          <div class="etWHide">
+            <input type="hidden" value="TEST" name="Af"/>
+            <input type="hidden" name="ln" value="esp" />
+            <input type="hidden" name="cu" value="" />
+            <input type="hidden" value=""     name="fl"   id="EtFl"/>
+            <input type="hidden" value=""     name="ds"   id="Etdt"/>
+            <input type="hidden" value=""     name="cy"   id="EtCy"/>
+            <input type="hidden" value=""     name="ht"   id="EtHt"/>
+            <input type="hidden" value=""     name="hn"   id="EtHtNm"/>
+            <input type="hidden" value=""     name="ct"   id="EtCt"/>
+            <input type="hidden" value="7"    name="ol"   id="EtOrLt"/>
+            <input type="hidden" value="Asc"  name="sl"   id="EtStLt"/>
+            <input type="hidden" value="0"    name="pg"   id="EtPg"/>
+            <input type="hidden" value="10"   name="rc"   id="EtRc"/>
+            <input type="hidden" value=""           id="EtWtDes"/>
+            <input type="hidden" value=""     name="fos"  id="FilterOptions"/>
+            <input type="hidden" value="20"   name="ctis" id="CatDesde"/>
+            <input type="hidden" value="60"   name="ctie" id="CatHasta"/>
+            <input type="hidden" value=""     name="rs"   id="preciode"/>
+            <input type="hidden" value=""     name="re"   id="preciohasta"/>
+            <input type="hidden" value=""     name="mp"   id="MealId"/>
+            <input type="hidden" value=""     name="mpn"  id="MealName"/>
+            <input type="hidden" value=""     name="chn"  id="ChainId"/>
+            <input type="hidden" value=""     name="chnn" id="ChainName"/>
+            <input type="hidden" value=""     name="li"   id="LocationId"/>
+            <input type="hidden" value=""     name="ltn"  id="LocationName"/>
+            <input type="hidden" value=""     name="thi"  id="EtChkTypeHotelBuscar"/>
+            <input type="hidden" value=""     name="ac1"  id="EtNumAges1"/> 
+            <input type="hidden" value=""     name="ac2"  id="EtNumAges2"/>
+            <input type="hidden" value=""     name="ac3"  id="EtNumAges3"/>
+          </div>
+          <div class="etWrow">
+            <label>&iquest;Qu&eacute; destino u hotel&#63;:</label>
+            <input type="text"   value="Especifique una ciudad"     name="dn"   id="EtDestinyHtl"/>
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow2">
+            <label>Desde:</label>
+            <input type="text"   value=""   readonly="yes"  name="sd"   class="cal EtDateFromGN "/>
 
-<h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages Etravel.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+          </div>
+          <div class="etWrow2">
+            <label>Hasta:</label>
+            <input type="text"   value=""   readonly="yes"  name="ed"   class="cal EtDateToGN"/>
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow">
+            <div class="etWheader">
+              <span class="rom">Cuartos:</span>
+              <span class="ads">Adultos</span>
+              <span class="chi">Ni&ntilde;os</span>
+            </div>
+            <div class="etWSelect rm etWSmall"><select name="rm">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select><span></span></div>
+            <div id="Room1" class="etWRoom">
+              <span>Cuarto 1:</span>
+              <div class="etWSelect etWSmall adl etWPersons"><select name="ad1">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch1">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+            <div id="Room2" class="etWRoom">
+              <span>Cuarto 2:</span>
+              <div class="etWSelect etWSmall etWPersons"><select name="ad2">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch2">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+            <div id="Room3" class="etWRoom">
+              <span>Cuarto 3:</span>
+              <div class="etWSelect etWSmall etWPersons"><select name="ad3">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch3">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+          </div>
+          <div id="AgeC" class="etWrow">
+            <span class="etHe">Especifique la edad de los niños (0-12):</span>
+            <div class="etWAge" id="Age1">
+              <label>Edad de los ni&ntilde;os (Habitaci&oacute;n 1):</label>
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+            <div class="etWAge" id="Age2">
+              <label>Edad de los ni&ntilde;os (Habitaci&oacute;n 2):</label>
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+            <div class="etWAge" id="Age3">
+              <label>Edad de los ni&ntilde;os (Habitaci&oacute;n 3):</label>
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Buscar"/>
+          </div>
+        </form>
+        <form style="display:none;" accept-charset="UTF-8" id="formapackage" class="form" name="formapackage" method="post" action="http://www.e-tsw.com.mx/Paquetes/Lista">
+          <div class="etWHide">
+            <input type="hidden" value="TEST" name="Af"/>
+            <input type="hidden" name="ln" value="esp" />
+            <input type="hidden" name="cu" value="" />
+            <input type="hidden" name="fl" id="EtFl" value="">
+            <input type="hidden" value="" name="ht" id="EtHId">
+            <input type="hidden" value="" name="hnp" id="EtHName">
+            <input type="hidden" value="" name="ob" id="EtIATAob">
+            <input type="hidden" value="0" name="ds" id="EtdtPk">
+            <input type="hidden" value="" name="ib" id="EtIATds">
+            <input type="hidden" value="1" id="EtWthArr">
+            <input type="hidden" value="" name="fos" id="FilterOptions">
+            <input type="hidden" value="20 " name="ctis" id="CatDesde">
+            <input type="hidden" value="60" name="ctie" id="CatHasta">
+            <input type="hidden" value="" name="th" id="HotelType">
+            <input type="hidden" value="" name="thn" id="HotelTypeName">
+            <input type="hidden" value="" name="li" id="LocTypeId">
+            <input type="hidden" value="" name="lt" id="LocTypeName">
+            <input type="hidden" value="" name="iip" id="AirlineId">
+            <input type="hidden" value="" name="aop" id="AirlineName">
+            <input type="hidden" value="" name="cpp" id="Cabin">
+            <input type="hidden" name="ac1" id="EtPkNumAges1" value="">
+            <input type="hidden" name="ac2" id="EtPkNumAges2" value="">
+            <input type="hidden" name="ac3" id="EtPkNumAges3" value="">
+          </div>
+          <div class="etWrow">
+            <label>&iquest;Qu&eacute; origen&#63;:</label>
+            <input type="text"   value="Escriba el nombre de la ciudad"     name="no"   id="EtCityOrig">
+          </div>
+          <div class="etWrow">
+            <label>&iquest;Qu&eacute; destino&#63;:</label>
+            <input type="text"   value="Escriba el nombre de la ciudad"     name="dn"   id="EtDestinyPkl">
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow2">
+            <label>Desde:</label>
+            <input type="text"   value=""     name="sd"   class="cal EtDateFromGN" />
+          </div>
+          <div class="etWrow2">
+            <label>Hasta:</label>
+            <input type="text"   value=""     name="ed"   class="cal EtDateToGN" />
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow">
+            <div class="etWheader">
+              <span class="rom">Cuartos:</span>
+              <span class="ads">Adultos</span>
+              <span class="chi">Ni&ntilde;os</span>
+            </div>
+            <div class="etWSelect etWSmall rm"><select name="rm">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select><span></span></div>
+            <div id="RoomPk1" class="etWRoom">
+              <span>Cuarto 1:</span>
+              <div class="etWSelect etWSmall adl etWPersons"><select name="ad1" class="adl"> 
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch1"> 
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+            <div id="RoomPk2" class="etWRoom">
+              <span>Cuarto 2:</span>
+              <div class="etWSelect etWSmall etWPersons"><select name="ad2"> 
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch2"> 
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+            <div id="RoomPk3" class="etWRoom">
+              <span>Cuarto 3:</span>
+              <div class="etWSelect etWSmall etWPersons"><select name="ad3"> 
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch3"> 
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+          </div>
+          <div id="AgePkC" class="etWrow">
+            <span class="etHe">Especifique la edad de los niños (0-12):</span>
+            <div class="etWAge" id="AgePk1">
+              <label>Edad de los ni&ntilde;os (Habitaci&oacute;n 1):</label>
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+            <div class="etWAge" id="AgePk2">
+              <label>Edad de los ni&ntilde;os (Habitaci&oacute;n 2):</label>
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+            <div class="etWAge" id="AgePk3">
+              <label>Edad de los ni&ntilde;os (Habitaci&oacute;n 3):</label>
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Buscar"/>
+          </div>
+        </form>
+        <form  style="display:none;" accept-charset="UTF-8" id="formaflight" class="form" name="formaflight" method="post" action="http://www.e-tsw.com.mx/Vuelos/Lista">
+          <div class="etWHide">
+            <input type="hidden" value="esp" name="ln" />
+            <input type="hidden" value="TEST" name="af" />
+            <input type="hidden" name="cu" value="" />
+            <input type="hidden" value="" name="ob" id="EtIATAobFl" />
+            <input type="hidden" value="" name="ib" id="EtIATAibFl" />
+            <input type="hidden" value="0" id="EtWthLea" />
+            <input type="hidden" value="0" id="EtWthArr" />
+            <input type="hidden" name="ac1" id="EtFLNumAges1" value="" />
+          </div>
+          <div class="etWrow">
+            <label>Tipo de viaje</label>
+            <div class="etWSelect etWLarge"><select name="ti" id="EtFType">
+              <option selected="'selected'" value="round">Viaje redondo</option>
+              <option value="one">Viaje sencillo</option>
+            </select><span></span></div>
+          </div>
+          <div class="etWrow">
+            <label>&iquest;Qu&eacute; origen&#63;:</label>
+            <input type="text"   value="Escriba el nombre de la ciudad"     name="no"   id="EtCityOrigFL">
+          </div>
+          <div class="etWrow">
+            <label>&iquest;Qu&eacute; destino&#63;:</label>
+            <input type="text"   value="Escriba el nombre de la ciudad"     name="ni"   id="EtDestinyFL">
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow2">
+            <label>Desde:</label>
+            <input type="text"   value=""     name="sd"   class="cal EtDateFromGN" />
+          </div>
+          <div class="etWrow2">
+            <label>Hasta:</label>
+            <input type="text"   value=""     name="ed"   class="cal EtDateToGN" />
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow">
+            <div class="etWheaderF">
+              <span class="ads">Adultos</span>
+              <span class="chi">Ni&ntilde;os</span>
+            </div>
+            <div id="RoomFL1" class="etWRoomF">
+              <div class="etWSelect etWSmall adl etWPersons"><select name="ad1"> 
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch1"> 
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>
+            </div>
+          </div>
+          <div id="AgeFLC" class="etWrow">
+            <span class="etHe">Especifique la edad de los ni&ntilde;os (0-12):</span>
+            <div class="etWAge" id="AgeFL1">
+              <div class="etWSelect etWSmall age-select ones"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select two"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+              <div class="etWSelect etWSmall age-select three"><select><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><span></span></div>
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Buscar"/>
+          </div>
+        </form>
+        <form style="display:none;" accept-charset="UTF-8" class="form" id="formacar" name="formacar" method="post" action="http://www.e-tsw.com.mx/Autos/Lista">
+          <div class="RbTitle">
+            <span class="buscar">Buscar Autos</span>
+          </div>
+          <div class="etWHide">
+            <input type="hidden" name="Af" value="TEST"/>
+            <input type="hidden" name="cu" value=""/>
+            <input type="hidden" name="ln" value="esp"/>
+            <input type="hidden" name="do" value="" id="do" />
+            <input type="hidden" name="pu" value="" id="pu" />
+          </div>
+          <div class="etWrow">
+            <label class="spMs">Ciudad de Entrega:</label>
+            <input name="nu" id="cityco" type="text" value="Especifique una ciudad" class="cityc" />
+          </div>
+          <div class="etWrow2">
+            <label class="spMs">Entrega:</label>
+            <input name="sd" type="text" class="cal EtDateFromGN">
+          </div>
+          <div class="etWrow2">
+            <label class="spTT2">Horario:</label>
+            <div class="etWSelect etWMedium"><select id="Hora_Entrega" name="st">
+              <option value="00:00">12:00 AM</option>
+              <option value="01:00">01:00 AM</option>
+              <option value="02:00">02:00 AM</option>
+              <option value="03:00">03:00 AM</option>
+              <option value="04:00">04:00 AM</option>
+              <option value="05:00">05:00 AM</option>
+              <option value="06:00">06:00 AM</option>
+              <option value="07:00">07:00 AM</option>
+              <option value="08:00">08:00 AM</option>
+              <option value="09:00">09:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="13:00">01:00 PM</option>
+              <option selected="" value="14:00">02:00 PM</option>
+              <option value="15:00">03:00 PM</option>
+              <option value="16:00">04:00 PM</option>
+              <option value="17:00">05:00 PM</option>
+              <option value="18:00">06:00 PM</option>
+              <option value="19:00">07:00 PM</option>
+              <option value="20:00">08:00 PM</option>
+              <option value="21:00">09:00 PM</option>
+              <option value="22:00">10:00 PM</option>
+              <option value="23:00">11:00 PM</option>
+            </select><span></span></div>
+          </div>
+          <div class="etWrow">
+            <label class="spMs">Ciudad de Devoluci&oacute;n:</label>
+            <input name="no" id="cityib" type="text" value="Especifique una ciudad" class="cityc" />
+          </div>
+          <div class="etWrow2">
+            <label class="spMs">Fecha de Regreso:</label>
+            <input name="ed" type="text" class="cal EtDateToGN">
+          </div>
+          <div class="etWrow2">
+            <label class="spTT2">Hora de Regreso:</label>
+            <div class="etWSelect etWMedium"><select id="Hora_Devolucion" name="et">
+              <option value="00:00">12:00 AM</option>
+              <option value="01:00">01:00 AM</option>
+              <option value="02:00">02:00 AM</option>
+              <option value="03:00">03:00 AM</option>
+              <option value="04:00">04:00 AM</option>
+              <option value="05:00">05:00 AM</option>
+              <option value="06:00">06:00 AM</option>
+              <option value="07:00">07:00 AM</option>
+              <option value="08:00">08:00 AM</option>
+              <option value="09:00">09:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="13:00">01:00 PM</option>
+              <option selected="" value="14:00">02:00 PM</option>
+              <option value="15:00">03:00 PM</option>
+              <option value="16:00">04:00 PM</option>
+              <option value="17:00">05:00 PM</option>
+              <option value="18:00">06:00 PM</option>
+              <option value="19:00">07:00 PM</option>
+              <option value="20:00">08:00 PM</option>
+              <option value="21:00">09:00 PM</option>
+              <option value="22:00">10:00 PM</option>
+              <option value="23:00">11:00 PM</option>
+            </select><span></span></div>
+          </div>
+          <div class="etWrow">
+            <label class="spMs">Tipo de Auto:</label>
+            <div class="etWSelect etWLarge"><select id="Tipo_Carro" name="ic">
+              <option selected="" value="">Todas las categor&iacute;as</option>
+              <option value="E">Economico</option>
+              <option value="C">Compacto</option>
+              <option value="I">Intermedio</option>
+              <option value="F">Full-Size</option>
+              <option value="S">Estandar</option>
+              <option value="M">Mini</option>
+              <option value="K">Automatico</option>
+            </select><span></span></div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Buscar"/>
+          </div>
+        </form>
+        <form style="display:none;" accept-charset="UTF-8" id="formatour" action="http://www.e-tsw.com.mx/Tours/Lista" class="form" name="formatour" method="post">
+          <div class="etWHide">
+              <input type="hidden" name="af" value="TEST"/>
+              <input type="hidden" name="ln" value="esp"/>
+              <input type="hidden" name="cu" value="" />
+              <input type="hidden" name="ol" value="0" id="EtOrLt" />
+              <input type="hidden" name="sl" value="Asc" id="EtStLt" />
+              <input type="hidden" name="pg" value="1" id="EtPg" />
+              <input type="hidden" name="rc" value="10" id="EtRc" />
+          </div>
+          <div class="etWrow">
+            <label>Destino</label>
+            <div class="etWSelect etWLarge"><select name="dst" id="EtSelectDest">
+              <option value="1">Acapulco</option>
+              <option value="49">Aguascalientes</option>
+              <option value="46">Campeche</option>
+              <option selected="selected" value="2">Cancun</option>
+              <option value="135">Celaya</option>
+              <option value="3">Chiapas</option>
+              <option value="48">Chihuahua</option>
+              <option value="55">Copper Canyon</option>
+              <option value="4">Cozumel</option>
+              <option value="57">Cuernavaca</option>
+              <option value="61">Durango</option>
+              <option value="109">Ensenada</option>
+              <option value="15">Guadalajara</option>
+              <option value="47">Guanajuato</option>
+              <option value="134">Guaymas San Carlos</option>
+              <option value="131">Hermosillo</option>
+              <option value="5">Huatulco</option>
+              <option value="6">Isla Mujeres</option>
+              <option value="7">Ixtapa &amp; Zihuatanejo</option>
+              <option value="35">La Paz</option>
+              <option value="71">Loreto</option>
+              <option value="8">Los Cabos</option>
+              <option value="111">Los Mochis</option>
+              <option value="30">Manzanillo</option>
+              <option value="9">Mazatlan</option>
+              <option value="10">Merida</option>
+              <option value="11">Mexico City</option>
+              <option value="107">Michoacan</option>
+              <option value="32">Monterrey</option>
+              <option value="51">Morelia</option>
+              <option value="17">Oaxaca</option>
+              <option value="68">Pachuca</option>
+              <option value="78">Palenque</option>
+              <option value="16">Playa del Carmen</option>
+              <option value="39">Puebla</option>
+              <option value="52">Puerto Escondido</option>
+              <option value="12">Puerto Vallarta</option>
+              <option value="40">Queretaro</option>
+              <option value="13">Riviera Maya</option>
+              <option value="112">Riviera Nayarit</option>
+              <option value="76">San Cristobal de las Casas</option>
+              <option value="59">San Luis Potosi</option>
+              <option value="50">Tijuana</option>
+              <option value="77">Tuxtla Gutierrez</option>
+              <option value="113">Valle de Bravo</option>
+              <option value="31">Veracruz Port</option>
+              <option value="42">Villahermosa</option>
+              <option value="72">Xalapa</option>
+              <option value="93">Yucatan</option>
+              <option value="60">Zacatecas</option>
+            </select><span></span></div>
+          </div>
+          <div class="etWrow2">
+            <label>Fecha:</label>
+            <input type="text" class="cal EtDateFromGN" name="sd" value="">
+          </div>
+          <div style="display:none !important;" class="etWrow2">
+            <label>Hasta:</label>
+            <input type="text" class="cal EtDateToGN" name="ed" value="">
+          </div>
+          <div class="button">
+            <input type="submit" value="Buscar"/>
+          </div>
+        </form>
+        <form style="display:none;" action="http://www.e-tsw.com.mx/Traslados/Tarifas" accept-charset="UTF-8" id="formatransfer" class="form" name="formatransfer" method="post" >
+          <div class="etWHide">
+            <input type="hidden" value="TEST" name="Af"/>
+            <input type="hidden" value="esp" name="ln" />
+            <input type="hidden" value="" name="cu" />
+            <input type="hidden" name="tnm" value="" id="EtType" />
+            <input type="hidden" name="ht" value="" id="EtHotelId" />
+            <input type="hidden" name="ctf" value="" id="EtCountryId" />
+          </div>
+          <div class="etWrow">
+            <label>Tipo de traslado:</label>
+            <div class="etWSelect etWLarge"><select name="tid" id="EtTypeId">
+              <option value="R">Viaje redondo</option>
+              <option value="L">Viaje sencillo llegada</option>
+              <option value="S">Viaje sencillo regreso</option>
+            </select><span></span></div>
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow">
+            <label>Hotel:</label>
+            <input type="text" value="Nombre del hotel" name="hn" id="EtHotel">
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow2">
+            <label>Salida:</label>
+            <input type="text"   value=""     name="sd"   class="cal EtDateFromGN" />
+          </div>
+          <div class="etWrow2">
+            <label>Regreso:</label>
+            <input type="text"   value=""     name="ed"   class="cal EtDateToGN" />
+          </div>
+          <div class="EtBxLine"></div>
+          <div class="etWrow">
+            <div class="etWheaderS">
+              <span class="ads">Adultos</span>
+              <span class="chi">Ni&ntilde;os</span>
+            </div>
+            <div id="RoomSl" class="etWRoomF">
+              <div class="etWSelect etWSmall adl etWPersons"><select name="ad1"> 
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select><span></span></div>
+              <div class="etWSelect etWSmall etWPersons"><select name="ch1"> 
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select><span></span></div>              
+            </div>
+          </div>
+          <div class="button">
+            <input type="submit" value="Buscar"/>
+          </div>
+        </form>
+      </div>
+    </div>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
       </section>
     </div>
 
