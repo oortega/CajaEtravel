@@ -201,7 +201,7 @@ ul, ol, dl {
 }
 
 ul {
-  list-style: inside;
+
   padding-left: 20px;
 }
 
@@ -230,24 +230,6 @@ hr {
   border: none;
   background: url('../images/bg_hr.png') repeat-x center;
 }
-
-table {
-  border: 1px solid #373737;
-  margin-bottom: 20px;
-  text-align: left;
- }
-
-th {
-  font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  padding: 10px;
-  background: #373737;
-  color: #fff;
- }
-
-td {
-  padding: 10px;
-  border: 1px solid #373737;
- }
 
 form {
   background: #f2f2f2;
@@ -356,6 +338,7 @@ Full-Width Styles
   background: #f2f2f2;
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
+  min-height: 600px;
 }
 
 #main_content {
