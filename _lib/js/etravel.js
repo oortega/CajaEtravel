@@ -20,15 +20,19 @@ jQuery(document).ready(function(){
         minDate:0,
         maxDate:"+1y",
         beforeShowDay: RangoDias,
-        onClose: function(dates){ jQuery(this).parents('form').find(".EtDateToGN").datepicker("show");},
+        beforeShow: function(input, ins) { 
+            if ($(input).data("oldDate") == undefined) $(input).data("oldDate", input.value)
+        },
+        onClose: function(dateText, inst) {
+            if ($(this).data("oldDate") != dateText ) {
+                $(this).data("oldDate", dateText);
+                $(this).parents("form").find(".EtDateToGN").datepicker("show");
+            }
+        },
         onSelect: OnSelectDate
-        
     });
     jQuery(".EtDateToGN").datepicker({
         dateFormat: FormatO,
-        /*showOn: "both",
-        buttonImageOnly: true,
-        buttonText: "",*/
         numberOfMonths: 2,
         showButtonPanel: true,
         minDate:+1,
@@ -104,6 +108,7 @@ jQuery(document).ready(function(){
 
             } 
         });
+      
        
     }
     // Config de form paquetes
@@ -567,23 +572,22 @@ function OnSelectDate(dateSel) {
     var dateFromInput=jQuery("#"+formId+" .EtDateFromGN");
     var dateToInput=jQuery("#"+formId+" .EtDateToGN");
     var newdate,dateFrom,dateTo;
-    console.log("ab");
+
      //ESTA SECCIÓN IDENTIFICA A QUE CALENDARIO SE LE DA CLICK
     if ( dtClass.indexOf('EtDateFromGN') >=0 ){
         dateFrom = jQuery(this).datepicker("getDate");
         dateTo = dateToInput.datepicker("getDate");  
         newdate=addDate(dateFrom,'+2', 'd'); //Nueva fecha para el input EtDateToGN
         if (dateFrom>=dateTo) {dateToInput.datepicker("setDate",newdate);} // Asignamos el nuevo valor al input EtDateToGN
-        //jQuery("#"+formId+" .EtDateToGN").focus();
-       // console.log(jQuery("#"+formId+" .EtDateToGN"));
+       
 
     }
     else{
         dateFrom = dateFromInput.datepicker("getDate");
         dateTo = jQuery(this).datepicker("getDate");
-        newdate=addDate(dateTo,'-2', 'd'); //Nueva fecha para el input EtDateFromGN
+        newdate=addDate(dateTo,'-1', 'd'); //Nueva fecha para el input EtDateFromGN
         if (dateTo<=dateFrom) {dateFromInput.datepicker("setDate",newdate); } // Asignamos el nuevo valor al input EtDateFromGN
-       // NumeroNoches(dateFrom.getTime(), dateTo.getTime() );
+      
     }
 
      
@@ -612,12 +616,12 @@ function NumeroNoches(date){
     jQuery(".Noches").remove();
     
     var Formanoches=jQuery(this).parents("form").attr('id'),
-        //inicio= jQuery('#'+Formanoches+' .EtDateFromGN').datepicker("getDate").getTime(),
+        
         fin= jQuery('#'+Formanoches+' .EtDateToGN').datepicker("getDate").getTime();
         inicionoches= jQuery('#'+Formanoches+' .EtDateFromGN').datepicker("getDate").getTime();
 
-        noches=(fin-inicionoches)/864e5;
-   // jQuery(".ui-datepicker-current").after("<span class='Noches' >"+noches+" Noches</span>");        ui-datepicker-close
+        noches=Math.ceil((fin-inicionoches)/864e5);
+   
    jQuery(".ui-datepicker-close").before("<span class='Noches' >"+noches+" Noches</span>");        
 }
 //Muestra numero de noches al pocisionar el mouse sobre un dia
@@ -627,7 +631,7 @@ function NumeroNochesHover(){
         diahover=parseInt( $(this).html());
     var fechahover= new Date ( datehover.year,datehover.month, diahover );
         fechahover=fechahover.getTime();
-    fechahover=Math.round((fechahover-inicionoches)/864e5);
+    fechahover=Math.ceil((fechahover-inicionoches)/864e5);
 
     if(fechahover>0){
         $(".Noches").text(fechahover+" Noches");    
@@ -646,68 +650,6 @@ function ValidateDate(forma){
 
 /*Funciones Generales */
 
-//Autos
-var arrCars=[
-    {desc:'Acapulco',AuxText:'Acapulco Aeropuerto',ID:'2,ACA,111|'},
-    {desc:'Acapulco',AuxText:'Acapulco Centro',ID:'2,ACA,112|'},
-    {desc:'Cancun',AuxText:'Cancún Aeropuerto',ID:'2,CUN,139|'},
-    {desc:'Cancun',AuxText:'Cancún Centro de Convenciones',ID:'2,CUN,147|'},
-    {desc:'Cancun',AuxText:'Cancún Plaza La Isla',ID:'2,CUN,146|'},
-    {desc:'Cancun',AuxText:'Cancún Walmart',ID:'2,CUN,143|'},
-    {desc:'Cozumel',AuxText:'Cozumel Aeropuerto',ID:'2,COZ,134|'},
-    {desc:'Huatulco',AuxText:'Huatulco Aeropuerto',ID:'2,HUAT,154|'},
-    {desc:'Ixtapa - Zihuatanejo',AuxText:'Ixtapa-Zihuatanejo Aeropuerto',ID:'3,IXTA,634|'},
-    {desc:'Los Cabos',AuxText:'Los Cabos Aeropuerto',ID:'2,SJC,190|'},
-    {desc:'Mazatlan',AuxText:'Mazatlán Aeropuerto',ID:'3,MAZCER,603|'},
-    {desc:'Merida',AuxText:'Mérida Aeropuerto',ID:'2,MERID,163|'},
-    {desc:'Merida',AuxText:'Mérida Fiesta Americana',ID:'2,MERID,165|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Aeropuerto',ID:'2,AIRPORT,115|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Camino Real',ID:'2,AIRPORT,118|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Patriotismo',ID:'2,AIRPORT,121|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Vallejo',ID:'2,AIRPORT,119|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Walmart Acoxpa',ID:'2,AIRPORT,122|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Walmart Miguel ágel Quevedo',ID:'2,AIRPORT,124|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Walmart Santa Fé',ID:'2,AIRPORT,120|'},
-    {desc:'Ciudad de Mexico',AuxText:'Cd. de México Walmart Satelite',ID:'2,AIRPORT,123|'},
-    {desc:'Puerto Vallarta',AuxText:'Puerto Vallarta Aeropuerto',ID:'2,PTRN,181|'},
-    {desc:'Riviera Maya|Tulum',AuxText:' Tulum Centro',ID:'2,TULUM,198|'},
-    {desc:'Riviera Maya|Tulum',AuxText:' Tulum Hotel Copal',ID:'2,TULUM,199|'},
-    {desc:'Guadalajara',AuxText:'Guadalajara Aeropuerto',ID:'2,GUAD,150|'},
-    {desc:'Guadalajara',AuxText:'Guadalajara Camino Real',ID:'2,GUAD,151|'},
-    {desc:'Playa del Carmen',AuxText:'Playa del Carmen Centro',ID:'2,PDC,175|'},
-    {desc:'Playa del Carmen',AuxText:'Playa del Carmen Quinta Avenida',ID:'2,PDC,177|'},
-    {desc:'Oaxaca',AuxText:'Oaxaca Aeropuerto',ID:'3,OAX,606|'},
-    {desc:'Veracruz',AuxText:'Veracruz Aeropuerto',ID:'2,VER,202|'},
-    {desc:'Veracruz',AuxText:'Coatzacoalco-Minatitlán Coatzacoalcos-Minatitlan Aeropuerto',ID:'2,COAT,132|'},
-    {desc:'Monterrey',AuxText:'Monterrey Aeropuerto',ID:'2,MTYAIR,168|'},
-    {desc:'Monterrey',AuxText:'Monterrey Sheraton Amnassador',ID:'2,MTYAIR,171|'},
-    {desc:'Monterrey',AuxText:'Monterrey Camino Real',ID:'2,MTYAIR,169|'},
-    {desc:'La Paz',AuxText:'La Paz Aeropuerto',ID:'2,LAPAZ,708|'},
-    {desc:'La Paz',AuxText:'La Paz Walmart',ID:'2,LAPAZ,159|'},
-    {desc:'La Paz',AuxText:'La Paz Santa Cruz de la Sierra',ID:'4,BOlapaz,770|'},
-    {desc:'Puebla',AuxText:'Puebla Centro',ID:'2,PUEB,186|'},
-    {desc:'Queretaro',AuxText:'Queretaro Aeropuerto',ID:'2,QRO,187|'},
-    {desc:'Queretaro',AuxText:'Queretaro Centro',ID:'2,QRO,188|'},
-    {desc:'Villahermosa',AuxText:'Villahermosa Aeropuerto',ID:'2,VILLA,204|'},
-    {desc:'Toluca',AuxText:'Toluca Aeropuerto',ID:'2,TOL,197|'},
-    {desc:'Chihuahua',AuxText:'Chihuahua Aeropuerto',ID:'2,CHI,130|'},
-    {desc:'Chihuahua',AuxText:'Chihuahua Centro',ID:'2,CHI,131|'},
-    {desc:'Aguascalientes',AuxText:'Aguascalientes Aeropuerto',ID:'2,AGUA,113|'},
-    {desc:'Aguascalientes',AuxText:'Aguascalientes Centro',ID:'2,AGUA,114|'},
-    {desc:'Tijuana',AuxText:'Tijuana Aeropuerto Advantage',ID:'2,TIJ,195|'},
-    {desc:'Tijuana',AuxText:'Tijuana Centro',ID:'2,TIJ,196|'},
-    {desc:'Ciudad Juarez',AuxText:'Cd. Juárez Aeropuerto',ID:'2,CDJ,128|'},
-    {desc:'Ciudad Juarez',AuxText:'Cd. Juárez Centro',ID:'2,CDJ,129|'},
-    {desc:'Leon',AuxText:'León Aeropuerto',ID:'2,LEO,160|'},
-    {desc:'San Luis Potosi',AuxText:'San Luis Potosí Aeropuerto',ID:'2,SLP,192|'},
-    {desc:'San Luis Potosi',AuxText:'San Luis Potosí Holiday Inn Quijote',ID:'2,SLP,193|'},
-    {desc:'Mexicali',AuxText:'Mexicali Aeropuerto',ID:'2,MEXICALI,166|'},
-    {desc:'Mexicali',AuxText:'Mexicali Centro',ID:'2,MEXICALI,167|'},
-    {desc:'Saltillo',AuxText:'Saltillo Aeropuerto',ID:'2,SAL,709|'},
-    {desc:'Tuxtla Gutierrez',AuxText:'Tuxtla Gutiérrez Aeropuerto',ID:'2,TUX,200|'},
-    {desc:'Tuxtla Gutierrez',AuxText:'Tuxtla Gutiérrez Camino Real',ID:'2,TUX,201|'},
-    {desc:'Culiacan',AuxText:'Culiacán Aeropuerto Advantage',ID:'2,CULI,646|'}
-];
 //Configura las secciones del autocompletado
 jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
     _renderMenu: function( ul, items ) {
@@ -888,10 +830,9 @@ function setAgeCI(suf,cuarto)
 }
 //Validar Fechas
 function restrict45Days(forma) {
-    var dateFrom = $.datepick.parseDate(FormatO, $('#'+forma+' .EtDateFromGN').val());
-    var dateTo = $.datepick.parseDate(FormatO, $('#'+forma+' .EtDateToGN').val());
-
-    var daysDiff = parseInt((dateTo.getTime()-dateFrom.getTime())/(24*3600*1000));
+    var dateFrom =jQuery('#'+forma+' .EtDateToGN').datepicker("getDate");
+    var dateTo =jQuery('#'+forma+' .EtDateFromGN').datepicker("getDate");  
+    var daysDiff =Math.ceil((dateFrom-dateTo)/864e5);
     
     if( daysDiff > 44 )
     {
@@ -900,10 +841,9 @@ function restrict45Days(forma) {
     }           
 }
 function restrictCar30Days() {
-    var dateFrom = $.datepick.parseDate(FormatO, $('#formacar .EtDateFromGN').val());
-    var dateTo = $.datepick.parseDate(FormatO, $('#formacar .EtDateToGN').val());
-
-    var daysDiff = parseInt((dateTo.getTime()-dateFrom.getTime())/(24*3600*1000));
+    var dateFrom =jQuery('#formacar .EtDateToGN').datepicker("getDate");
+    var dateTo =jQuery('#formacar .EtDateFromGN').datepicker("getDate");  
+    var daysDiff = Math.ceil((dateFrom-dateTo)/864e5);
     
     if( daysDiff > 30 )
     {
@@ -912,14 +852,15 @@ function restrictCar30Days() {
     }           
 }   
 function restrictCar24Hours() {
-    var dateFrom = $.datepick.parseDate(FormatO, $('#formacar .EtDateFromGN').val());
-    var dateTo = $.datepick.parseDate(FormatO, $('#formacar .EtDateToGN').val());
+    var dateFrom =jQuery('#formacar .EtDateToGN').datepicker("getDate");
+    var dateTo =jQuery('#formacar .EtDateFromGN').datepicker("getDate");  
+
     var horaEntrega = $("#Hora_Entrega").val().split(':')[0];
     var horaDevolucion = $("#Hora_Devolucion").val().split(':')[0];
     dateFrom.setHours(horaEntrega);
     dateTo.setHours(horaDevolucion);
 
-    var hoursDiff = parseInt((dateTo.getTime()-dateFrom.getTime())/(3600*1000));
+    var hoursDiff = Math.ceil( (dateTo.getTime()-dateFrom.getTime())/(3600*1000) );
     
     if( hoursDiff < 24 )
     {
