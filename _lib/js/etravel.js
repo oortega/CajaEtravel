@@ -845,22 +845,41 @@ function restrictCar30Days() {
     var dateTo =jQuery('#formacar .EtDateFromGN').datepicker("getDate");  
     var daysDiff = Math.ceil((dateFrom-dateTo)/864e5);
     
-    if( daysDiff > 30 )
+    if( daysDiff >= 30 )
     {
         alert(MsjMaxTimeCar);
         return(false);
     }           
 }   
+/*
 function restrictCar24Hours() {
-    var dateFrom =jQuery('#formacar .EtDateToGN').datepicker("getDate");
-    var dateTo =jQuery('#formacar .EtDateFromGN').datepicker("getDate");  
+    var dateFrom = $.datepick.parseDate(FormatO, $('#formacar .EtDateFromGN').val());
+    var dateTo = $.datepick.parseDate(FormatO, $('#formacar .EtDateToGN').val());
+    var horaEntrega = $("#Hora_Entrega").val().split(':')[0];
+    var horaDevolucion = $("#Hora_Devolucion").val().split(':')[0];
+    dateFrom.setHours(horaEntrega);
+    dateTo.setHours(horaDevolucion);
+
+    var hoursDiff = parseInt((dateTo.getTime() - dateFrom.getTime()) / (3600 * 1000));
+
+    if (hoursDiff < 24) {
+        alert(MsjMinTimeCar);
+        return (false);
+    }
+}
+
+*/
+
+function restrictCar24Hours() {
+    var dateFrom =jQuery('#formacar .EtDateFromGN').datepicker("getDate");
+    var dateTo =jQuery('#formacar .EtDateToGN').datepicker("getDate");  
 
     var horaEntrega = $("#Hora_Entrega").val().split(':')[0];
     var horaDevolucion = $("#Hora_Devolucion").val().split(':')[0];
     dateFrom.setHours(horaEntrega);
     dateTo.setHours(horaDevolucion);
 
-    var hoursDiff = Math.ceil( (dateTo.getTime()-dateFrom.getTime())/(3600*1000) );
+    var hoursDiff = Math.ceil( (dateTo.getTime()-dateFrom.getTime()) / (3600*1000) );
     
     if( hoursDiff < 24 )
     {
@@ -868,6 +887,8 @@ function restrictCar24Hours() {
         return(false);
     }
 }
+
+
 function restrictPack8People() {
     var rooms = parseInt($("#formapackage .rm select").val());
     var ad1 = parseInt($("#formapackage select[name=ad1]").val());
