@@ -71,9 +71,9 @@ jQuery(document).ready(function(){
         jQuery("#Room3 select[name=ch3]").change(function(){setAgeC(3,'')});
         jQuery("#Age3 select").change(function(){setAgeCI('',3)});
         //autocompletado Hotel
-        jQuery("#EtDestinyHtl").catcomplete({
+        jQuery("#EtDestinyHtl").autocomplete({
             minLength: 3,
-            delay: 0,
+            delay: 1000,
             source: function(request, response) {
                 if (request.term in cacheDH) {
                     response(cacheDH[request.term]);
@@ -87,33 +87,52 @@ jQuery(document).ready(function(){
                         ItemTypes: "D:5,H:5",
                         Filters:"",
                         PalabraBuscada: request.term
-                    }
-                    ,
+                    },
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }
                         cacheDH[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
-            
             select: function(event, ui) {
-                //alert(ui.item.Label);
-                    jQuery(this).val(ui.item.Label);
-                    jQuery("#Etdt").val(ui.item.TypeID);
-                    if(ui.item.Type=="H"){ jQuery("#EtHt").val(ui.item.TypeID); jQuery("#formahotel").attr('action','http://www.e-tsw.com.mx/Hoteles/Tarifas'); }
-                    else { jQuery("#EtHt").val(""); jQuery("#formahotel").attr('action','http://www.e-tsw.com.mx/Hoteles/Lista'); }
-                    jQuery("#EtCt").val(ui.item.Country);
-                    jQuery("#formahotel .EtDateFromGN").focus();
-                    return false;
-
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }
+                jQuery(this).val(ui.item.Label);
+                jQuery("#Etdt").val(ui.item.TypeID);
+                if(ui.item.Type=="H"){ jQuery("#EtHt").val(ui.item.TypeID); jQuery("#formahotel").attr('action','http://www.e-tsw.com.mx/Hoteles/Tarifas'); }
+                else { jQuery("#EtHt").val(""); jQuery("#formahotel").attr('action','http://www.e-tsw.com.mx/Hoteles/Lista'); }
+                jQuery("#EtCt").val(ui.item.Country);
+                jQuery("#formahotel .EtDateFromGN").focus();
+                return false;
             } 
-        });
-      
-       
+        }).data("ui-autocomplete")._renderMenu = function( ul, items ) {
+            var self = this,
+                currentCategory = "";
+            $.each( items, function( index, item ) {
+                var encabezado="";
+                if(item.Type=="D"){encabezado='<img src="http://www.e-tsw.com.mx/_lib/kvista/img/general/destinos_bg_'+IDioMA+'.png" alt="Destinos"/>';}
+                else{ encabezado='<img src="http://www.e-tsw.com.mx/_lib/kvista/img/general/hoteles_bg_'+IDioMA+'.png" alt="Hoteles"/>';}
+                if ( item.Type && item.Type != currentCategory ) {      // si hay resultados y si es otra categoía imprime los resultados
+                    ul.append( "<li class='ui-autocomplete-category'>" + encabezado + "</li>" );
+                    currentCategory = item.Type;
+                }
+                self._renderItemData(ul,item);            
+            });
+        }
+        jQuery("#EtDestinyHtl").data("ui-autocomplete")._renderItem = function (ul,item){
+            return jQuery("<li>")
+            .data("item.autocomplete", item)
+            .append(jQuery("<a>").text(item.Label))
+            .appendTo(ul);
+        }
     }
     // Config de form paquetes
     if ($("#formapackage").length === 1) {
-        
         jQuery("#formapackage").submit(function(){ return(ValidateFLPK('formapackage','dn')); });       
         jQuery("#formapackage").submit(function(){ return(restrict45Days('formapackage')); });  
         jQuery("#formapackage").submit(function(){ return(restrictPack8People()); });   
@@ -144,61 +163,74 @@ jQuery(document).ready(function(){
                     }
                     ,
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                        
                         cachePQ[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
                 jQuery("#EtCityOrig").val(ui.item.Label);
                 jQuery("#EtIATAob").val(ui.item.TypeID);
                 jQuery("#EtDestinyPkl").focus(); 
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
-            return jQuery("<li></li>")
+            return jQuery("<li>")
                 .data("item.autocomplete", item)
-                .append(jQuery("<a></a>, ").text(item.Label))
+                .append(jQuery("<a>").text(item.Label))
                 .appendTo(ul);
-                alert("hola");
         };
         //autocompletado destino paquetes
         jQuery("#EtDestinyPkl").autocomplete({
-                minLength: 2,
-                delay: 1000,
-                source: function(request, response) {
-                    if (request.term in cacheD) {
-                        response(cacheD[request.term]);
-                        return;
+            minLength: 2,
+            delay: 1000,
+            source: function(request, response) {
+                if (request.term in cacheD) {
+                    response(cacheD[request.term]);
+                    return;
+                }
+                jQuery.ajax({
+                    // Callback - JSONP
+                    
+                    url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
+                    dataType: "jsonp",
+                    data: {
+                        Lenguaje: IDioMA,
+                        ItemTypes: "P:10",
+                        Filters:"",
+                        PalabraBuscada: request.term
+                    },
+                    success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                            
+                        cacheD[request.term] = data.results;
+                        response(data.results);
                     }
-                    jQuery.ajax({
-                        // Callback - JSONP
-                        
-                        url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
-                        dataType: "jsonp",
-                        data: {
-                            Lenguaje: IDioMA,
-                            ItemTypes: "P:10",
-                            Filters:"",
-                            PalabraBuscada: request.term
-                        },
-                        success: function(data) {
-                                cacheD[request.term] = data.results;
-                                response(data.results);
-                        }
-                    });
-                },
-                select: function(event, ui) {
-                        jQuery("#EtDestinyPkl").val(ui.item.Label);
-                        jQuery("#EtdtPk").val(ui.item.TypeID.split("|")[1]);
-                        jQuery("#EtIATds").val(ui.item.TypeID.split("|")[0]);
-                        jQuery("#formapackage .EtDateFromGN").focus();
-                        return false;
-                },
+                });
+            },
+            select: function(event, ui) {
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
+                jQuery("#EtDestinyPkl").val(ui.item.Label);
+                jQuery("#EtdtPk").val(ui.item.TypeID.split("|")[1]);
+                jQuery("#EtIATds").val(ui.item.TypeID.split("|")[0]);
+                jQuery("#formapackage .EtDateFromGN").focus();
+                return false;
+            },
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
-                return jQuery("<li></li>")
+                return jQuery("<li>")
         .data("item.autocomplete", item)
-        .append(jQuery("<a></a>, ").text(item.Label))
+        .append(jQuery("<a>").text(item.Label))
         .appendTo(ul);
         };
    
@@ -239,13 +271,19 @@ jQuery(document).ready(function(){
                         PalabraBuscada: request.term
                     },
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                           
                         cachePQ[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
-                //alert("selection: " + ui.item.TypeID + " : " + ui.item.Label_name + " : " + ui.item.Label);
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
                 jQuery("#EtCityOrigFL").val(ui.item.Label);
                 jQuery("#EtIATAobFl").val(ui.item.TypeID);
                 return false;
@@ -277,12 +315,19 @@ jQuery(document).ready(function(){
                        
                      },
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                           
                         cachePQ[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
                 jQuery("#EtDestinyFL").val(ui.item.Label);
                 jQuery("#EtIATAibFl").val(ui.item.TypeID);
                 return false;
@@ -293,8 +338,6 @@ jQuery(document).ready(function(){
                 .append(jQuery("<a></a>, ").text(item.Label))
                 .appendTo(ul);
         }; 
-
-
     } 
     // Config de form autos
 
@@ -322,12 +365,19 @@ jQuery(document).ready(function(){
                         PalabraBuscada: request.term
                     },
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                           
                         cacheA[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
                 jQuery("#cityco").val(ui.item.Label);     
                 jQuery("#pu").val(ui.item.TypeID);           
                 jQuery("#cityib").val(ui.item.Label);
@@ -362,12 +412,19 @@ jQuery(document).ready(function(){
                         PalabraBuscada: request.term
                     },
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                           
                         cacheA[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
-            select: function(event, ui) {        
+            select: function(event, ui) {
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
                 jQuery("#cityib").val(ui.item.Label);
                 jQuery("#do").val(ui.item.TypeID);
                 return false;
@@ -429,12 +486,19 @@ jQuery(document).ready(function(){
                         
                     },
                     success: function(data) {
+                        if (data.totalResultsCount == 0) {
+                            data.results = [{Label: MsjNoResults, Type: null}]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                        }                           
                         cacheT[request.term] = data.results;
                         response(data.results);
                     }
                 });
             },
             select: function(event, ui) {
+                if (!ui.item.Type) {
+                    jQuery(this).val("");  // Cuando no hay resultados solo limpia la entrada
+                    return false;    
+                }                
                 jQuery("#EtHotel").val(ui.item.Label);
                 jQuery("#EtHotelId").val(ui.item.TypeID);
                 jQuery("#EtCountryId").val(ui.item.Country);
@@ -488,6 +552,7 @@ function DefVar(obj)
         MsjMinTimeCar="La fecha y hora de devoluci\u00F3n no puede ser menor a 24 horas a partir de la fecha de reservaci\u00F3n.";
         MsjMaxTimeCar="La fecha y hora de devoluci\u00F3n no puede ser mayor a 30 días a partir de la fecha de reservaci\u00F3n.";
         MsjMaxPeoplePack="El n\u00famero m\u00e1ximo permitido por reservaci\u00f3n es de 8 personas, por favor corrija e intente nuevamente su b\u00fasqueda";
+        MsjNoResults="No se encontraron resultados";
         IDioMA="esp";
     }
     if(jQuery(obj+" input[name=ln]").val().toUpperCase()=="POR")
@@ -509,6 +574,7 @@ function DefVar(obj)
         MsjMinTimeCar="A data e hora de retorno n\u00e3o pode ser inferior a 24 horas ap\u00F3s a data da reserva.";
         MsjMaxTimeCar="A data e hora de retorno n\u00e3o pode ser superior a 30 dias ap\u00F3s a data da reserva.";
         MsjMaxPeoplePack="O n\u00famero m\u00e1ximo permitido por reserva \u00e9 de 8 pessoas, por favor, corrija e tente novamente a sua pesquisa";
+        MsjNoResults="Nenhum resultado foi encontrado";
         IDioMA="por";
     }
     if(jQuery(obj+" input[name=ln]").val().toUpperCase()=="ING")
@@ -530,6 +596,7 @@ function DefVar(obj)
         MsjMinTimeCar="The date and time of return can not be less than 24 hours after the reservation date.";
         MsjMaxTimeCar="The date and time of return can not be greater than 30 days from the reservation date.";
         MsjMaxPeoplePack="The maximum number allowed per reservation is 8 people, please correct and try your search again";
+        MsjNoResults="No results were found";
         IDioMA="ing";
     }
 }
@@ -649,31 +716,6 @@ function ValidateDate(forma){
 /*Termina Calendarios*/
 
 /*Funciones Generales */
-
-//Configura las secciones del autocompletado
-jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
-    _renderMenu: function( ul, items ) {
-        var self = this,
-            currentCategory = "";
-        $.each( items, function( index, item ) {
-            var encabezado="";
-            if(item.Type=="D"){encabezado='<img src="http://www.e-tsw.com.mx/_lib/kvista/img/general/destinos_bg_'+IDioMA+'.png" alt="Destinos"/>';}
-            else{ encabezado='<img src="http://www.e-tsw.com.mx/_lib/kvista/img/general/hoteles_bg_'+IDioMA+'.png" alt="Hoteles"/>';}
-            if ( item.Type != currentCategory ) {
-                ul.append( "<li class='ui-autocomplete-category'>" + encabezado + "</li>" );
-                currentCategory = item.Type;
-            }
-            self._renderItemData(ul,item);
-            
-        });
-    },
-    _renderItem: function (ul,item){
-        return jQuery("<li></li>")
-        .data("item.autocomplete", item)
-        .append(jQuery("<a></a>, ").text(item.Label))
-        .appendTo(ul);
-    }
-}); 
 
 //Función de cambio de pestaña
 function CambiaPestanas(objeto,clase,contenedores){
