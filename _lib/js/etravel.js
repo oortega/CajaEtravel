@@ -1,4 +1,5 @@
 jQuery(document).ready(function(){
+    
     CambiaPestanas('.etWContainer .etWtabs a','active','.etWContainer .etWforms .form');
     //Configuraciones generales para los calendarios
    
@@ -38,6 +39,14 @@ jQuery(document).ready(function(){
         minDate:+1,
         maxDate:"+1y +1d",
         beforeShowDay: RangoDias,
+        beforeShow: function() {
+            var form = $(this).parents("form");
+            if ( form[0].id == "formahotel" || form[0].id == "formapackage" ) {
+                var fromDate = form.find(".EtDateFromGN").datepicker("getDate");
+                var toMaxDate = addDate(fromDate, eTMaxDays, 'd');
+                return {"maxDate": toMaxDate};
+            }
+        },
         afterShow: NumeroNoches,
         onSelect: OnSelectDate
     });
@@ -523,6 +532,7 @@ jQuery(document).ready(function(){
 });
 
 /*VARIABLES*/
+var eTMaxDays = 29;
 var MsjAirport,altMsjAirport,altMsjAirportr,altMsjDate,NFOrigen,NFDestino,PosadaAllIclusive,FalseHotel,FormatO,MsjAllInclusive,MsjHotel,Msj45Days,MsjMinTimeCar,MsjMaxTimeCar,IDioMA,MsjDestinO = {},inicionoches=0,noches=0;
 var cachePQ = {};
 var cacheDH = {};
@@ -641,23 +651,19 @@ function OnSelectDate(dateSel) {
     var newdate,dateFrom,dateTo;
 
      //ESTA SECCIÓN IDENTIFICA A QUE CALENDARIO SE LE DA CLICK
-    if ( dtClass.indexOf('EtDateFromGN') >=0 ){
+    if ( dtClass.indexOf('EtDateFromGN') >=0 ) {
         dateFrom = jQuery(this).datepicker("getDate");
         dateTo = dateToInput.datepicker("getDate");  
+        var daysDiff =Math.ceil((dateTo-dateFrom)/864e5);
         newdate=addDate(dateFrom,'+2', 'd'); //Nueva fecha para el input EtDateToGN
-        if (dateFrom>=dateTo) {dateToInput.datepicker("setDate",newdate);} // Asignamos el nuevo valor al input EtDateToGN
-       
-
+        if (dateFrom>=dateTo || daysDiff > eTMaxDays) {dateToInput.datepicker("setDate",newdate);} // Asignamos el nuevo valor al input EtDateToGN
     }
-    else{
+    else {
         dateFrom = dateFromInput.datepicker("getDate");
         dateTo = jQuery(this).datepicker("getDate");
         newdate=addDate(dateTo,'-1', 'd'); //Nueva fecha para el input EtDateFromGN
-        if (dateTo<=dateFrom) {dateFromInput.datepicker("setDate",newdate); } // Asignamos el nuevo valor al input EtDateFromGN
-      
+        if (dateTo<=dateFrom) {dateFromInput.datepicker("setDate",newdate); } // Asignamos el nuevo valor al input EtDateFromGN      
     }
-
-     
 }
 
 // Asigna clases para el  sombreado del inicio y fin de una reservacion
@@ -689,7 +695,16 @@ function NumeroNoches(date){
 
         noches=Math.ceil((fin-inicionoches)/864e5);
    
-   jQuery(".ui-datepicker-close").before("<span class='Noches' >"+noches+" Noches</span>");        
+   jQuery(".ui-datepicker-close").before("<span class='Noches' >"+noches+" Noches</span>");
+
+    /* Inicia Fix para la navegación de los meses */
+    function fixMonthsNavigation() {
+        if (!$.datepicker._lastInput)
+            $.datepicker._lastInput = $.datepicker._curInst.input[0];
+    }   
+    $(".ui-datepicker-next, .ui-datepicker-prev").off("mousedown", fixMonthsNavigation);
+    $(".ui-datepicker-next, .ui-datepicker-prev").on("mousedown", fixMonthsNavigation);
+    /* Termina Fix */
 }
 //Muestra numero de noches al pocisionar el mouse sobre un dia
 function NumeroNochesHover(){
@@ -872,20 +887,20 @@ function setAgeCI(suf,cuarto)
 }
 //Validar Fechas
 function restrict45Days(forma) {
-    var dateFrom =jQuery('#'+forma+' .EtDateToGN').datepicker("getDate");
-    var dateTo =jQuery('#'+forma+' .EtDateFromGN').datepicker("getDate");  
-    var daysDiff =Math.ceil((dateFrom-dateTo)/864e5);
+    var dateTo =jQuery('#'+forma+' .EtDateToGN').datepicker("getDate");
+    var dateFrom =jQuery('#'+forma+' .EtDateFromGN').datepicker("getDate");  
+    var daysDiff =Math.ceil((dateTo-dateFrom)/864e5);
     
-    if( daysDiff > 44 )
+    if( daysDiff > eTMaxDays )
     {
         alert(Msj45Days);
         return(false);
     }           
 }
 function restrictCar30Days() {
-    var dateFrom =jQuery('#formacar .EtDateToGN').datepicker("getDate");
-    var dateTo =jQuery('#formacar .EtDateFromGN').datepicker("getDate");  
-    var daysDiff = Math.ceil((dateFrom-dateTo)/864e5);
+    var dateTo =jQuery('#formacar .EtDateToGN').datepicker("getDate");
+    var dateFrom =jQuery('#formacar .EtDateFromGN').datepicker("getDate");  
+    var daysDiff = Math.ceil((dateTo-dateFrom)/864e5);
     
     if( daysDiff >= 30 )
     {
