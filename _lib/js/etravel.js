@@ -913,17 +913,12 @@ function changeFocus(obj, text) {
     jQuery(obj).blur(function() {
 
         jQuery(this).val(inputText);
+        jQuery(this).autocomplete( "search", "" ) ;
 
     });
 
 
 }
-
-//$("#eTResboxContainer input[type='text']").focus( function() { inputText = $(this).val(); $(this).val("") });
-//$("#eTResboxContainer input[type='text']").blur( function() { $(this).val(inputText); $(this).autocomplete( "search", "" ) /* <---Fix */ });
-
-
-
 
 //reinicia edad de los niños
 
