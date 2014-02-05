@@ -55,10 +55,18 @@ jQuery(document).ready(function() {
     });
     DefaultDate();
 
+   
     jQuery("body").on("mouseenter", "#ui-datepicker-div td a", NumeroNochesHover);
+   
     jQuery("body").on("mouseleave", "#ui-datepicker-div td a", function() {
-        jQuery(".Noches").text(noches + " Noches");
+        var idform=$.datepicker._curInst.input.parents("form").attr("id"); 
+        if((idform=="formahotel" ) || (idform=="formapackage" ) )//Validamos que solo se aplique al formulario de hotel y paquete
+        {
+            jQuery(".Noches").text(noches + " Noches");    
+        }
+        
     });
+
     /*Termina Calendarios*/
     ResetAll();
   
@@ -241,8 +249,8 @@ jQuery(document).ready(function() {
                 }
                 jQuery("#EtCityOrig").val(ui.item.Label);
                 jQuery("#EtIATAob").val(ui.item.TypeID);
-                jQuery("#EtDestinyPkl").focus();
                 inputText = ui.item.Label;
+                jQuery("#EtDestinyPkl").focus();
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
@@ -291,8 +299,8 @@ jQuery(document).ready(function() {
                 jQuery("#EtDestinyPkl").val(ui.item.Label);
                 jQuery("#EtdtPk").val(ui.item.TypeID.split("|")[1]);
                 jQuery("#EtIATds").val(ui.item.TypeID.split("|")[0]);
-                jQuery("#formapackage .EtDateFromGN").focus();
                 inputText = ui.item.Label;
+                jQuery("#formapackage .EtDateFromGN").focus();
                 return false;
             },
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
@@ -823,15 +831,16 @@ function RangoDias(date) {
 function NumeroNoches(date) {
     jQuery(".Noches").remove();
 
-    var Formanoches = jQuery(this).parents("form").attr('id'),
+    var Formanoches = jQuery(this).parents("form").attr('id');
+    if((Formanoches=="formahotel" ) || (Formanoches=="formapackage" ) ){
 
-        fin = jQuery('#' + Formanoches + ' .EtDateToGN').datepicker("getDate").getTime();
-    inicionoches = jQuery('#' + Formanoches + ' .EtDateFromGN').datepicker("getDate").getTime();
+        var fin = jQuery('#' + Formanoches + ' .EtDateToGN').datepicker("getDate").getTime();
+        inicionoches = jQuery('#' + Formanoches + ' .EtDateFromGN').datepicker("getDate").getTime();
 
-    noches = Math.ceil((fin - inicionoches) / 864e5);
+        noches = Math.ceil((fin - inicionoches) / 864e5);
 
-    jQuery(".ui-datepicker-close").before("<span class='Noches' >" + noches + " Noches</span>");
-
+        jQuery(".ui-datepicker-close").before("<span class='Noches' >" + noches + " Noches</span>");
+    }
     /* Inicia Fix para la navegación de los meses */
 
     function fixMonthsNavigation() {
@@ -845,18 +854,24 @@ function NumeroNoches(date) {
 //Muestra numero de noches al pocisionar el mouse sobre un dia
 
 function NumeroNochesHover() {
-    //alert("hola");
-    var datehover = $(this).parent().data(), //Se obtiene mes y año del dia seleccionado
+   
+    var idform=$.datepicker._curInst.input.parents("form").attr("id");
+    if((idform=="formahotel" ) || (idform=="formapackage" ) ){
+        var datehover = $(this).parent().data(), //Se obtiene mes y año del dia seleccionado
         diahover = parseInt($(this).html());
-    var fechahover = new Date(datehover.year, datehover.month, diahover);
-    fechahover = fechahover.getTime();
-    fechahover = Math.ceil((fechahover - inicionoches) / 864e5);
+        var fechahover = new Date(datehover.year, datehover.month, diahover);
+        fechahover = fechahover.getTime();
+        fechahover = Math.ceil((fechahover - inicionoches) / 864e5);
 
-    if (fechahover > 0) {
-        $(".Noches").text(fechahover + " Noches");
-    } else {
-        jQuery(".Noches").text(noches + " Noches");
+        if (fechahover > 0) {
+            $(".Noches").text(fechahover + " Noches");
+        } else {
+            jQuery(".Noches").text(noches + " Noches");
+        }
     }
+
+
+
 }
 
 function ValidateDate(forma) {
