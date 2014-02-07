@@ -16,7 +16,6 @@ jQuery(document).ready(function() {
 
     jQuery(".EtDateFromGN").datepicker({
         dateFormat: FormatO,
-
         numberOfMonths: 2,
         showButtonPanel: true,
         minDate: 0,
@@ -54,22 +53,18 @@ jQuery(document).ready(function() {
         onSelect: OnSelectDate
     });
     DefaultDate();
-
-   
     jQuery("body").on("mouseenter", "#ui-datepicker-div td a", NumeroNochesHover);
-   
     jQuery("body").on("mouseleave", "#ui-datepicker-div td a", function() {
-        var idform=$.datepicker._curInst.input.parents("form").attr("id"); 
-        if((idform=="formahotel" ) || (idform=="formapackage" ) )//Validamos que solo se aplique al formulario de hotel y paquete
+        var idform = $.datepicker._curInst.input.parents("form").attr("id");
+        if ((idform == "formahotel") || (idform == "formapackage")) //Validamos que solo se aplique al formulario de hotel y paquete
         {
-            jQuery(".Noches").text(noches + " Noches");    
+            jQuery(".Noches").text(noches + " Noches");
         }
-        
+
     });
 
     /*Termina Calendarios*/
     ResetAll();
-  
 
     // Pasa el valor del select al span
     jQuery(".etWContainer").find(".etWSelect select").change(function() {
@@ -80,11 +75,16 @@ jQuery(document).ready(function() {
     // Config de form hoteles
     if ($("#formahotel").length === 1) {
         jQuery('#formahotel').submit(function() {
-            return (ValidateHotel('formahotel', 'EtDestinyHtl', MsjDestinO, AltMsjDestinO));
-        })
-        jQuery('#formahotel').submit(function() {
-            return (restrict45Days('formahotel'));
+            var v1 = ValidateHotel('formahotel', 'EtDestinyHtl', MsjDestinO, AltMsjDestinO);
+            if (v1) {
+                cleanSubmit(this);
+            } else {
+                return false;
+            };
+
         });
+        changeFocus("#EtDestinyHtl", MsjDestinO);
+
         jQuery("#formahotel .rm select").change(function() {
             changeRoom('#formahotel', '')
         });
@@ -109,7 +109,6 @@ jQuery(document).ready(function() {
         //autocompletado Hotel
         jQuery("#EtDestinyHtl").autocomplete({
             minLength: 3,
-            delay: 1000,
             source: function(request, response) {
                 if (request.term in cacheDH) {
                     response(cacheDH[request.term]);
@@ -118,6 +117,7 @@ jQuery(document).ready(function() {
                 jQuery.ajax({
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSHotel",
                     data: {
                         Lenguaje: IDioMA,
                         ItemTypes: "D:5,H:5",
@@ -141,7 +141,7 @@ jQuery(document).ready(function() {
                     jQuery(this).val(""); // Cuando no hay resultados solo limpia la entrada
                     return false;
                 }
-               
+
                 jQuery("#Etdt").val(ui.item.TypeID);
                 if (ui.item.Type == "H") {
                     jQuery("#EtHt").val(ui.item.TypeID);
@@ -182,14 +182,16 @@ jQuery(document).ready(function() {
     }
     // Config de form paquetes
     if ($("#formapackage").length === 1) {
+
         jQuery("#formapackage").submit(function() {
-            return (ValidateFLPK('formapackage', 'dn'));
-        });
-        jQuery("#formapackage").submit(function() {
-            return (restrict45Days('formapackage'));
-        });
-        jQuery("#formapackage").submit(function() {
-            return (restrictPack8People());
+            var v1 = ValidateFLPK('formapackage', 'dn');
+            var v2 = restrictPack8People();
+            if (v1 && v2) {
+                cleanSubmit(this);
+            } else {
+                return false;
+            }
+
         });
         jQuery("#formapackage .rm select").change(function() {
             changeRoom('#formapackage', 'Pk')
@@ -212,10 +214,10 @@ jQuery(document).ready(function() {
         jQuery("#AgePk3 select").change(function() {
             setAgeCI('Pk', 3)
         });
+        changeFocus("#EtCityOrig,#EtDestinyPkl", MsjAirport);
         //autocompletado origen paquetes
         jQuery("#EtCityOrig").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cachePQ) {
                     response(cachePQ[request.term]);
@@ -224,6 +226,7 @@ jQuery(document).ready(function() {
                 jQuery.ajax({
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSPaquetes",
                     data: {
                         Lenguaje: IDioMA,
                         ItemTypes: "A:10",
@@ -261,8 +264,7 @@ jQuery(document).ready(function() {
         };
         //autocompletado destino paquetes
         jQuery("#EtDestinyPkl").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cacheD) {
                     response(cacheD[request.term]);
@@ -270,9 +272,9 @@ jQuery(document).ready(function() {
                 }
                 jQuery.ajax({
                     // Callback - JSONP
-
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSPaquetes",
                     data: {
                         Lenguaje: IDioMA,
                         ItemTypes: "P:10",
@@ -314,8 +316,12 @@ jQuery(document).ready(function() {
     // Config de form vuelos
     if ($("#formaflight").length === 1) {
         jQuery("#formaflight").submit(function() {
-            return (ValidateFLPK('formaflight', 'ni'));
+            var v1 = ValidateFLPK('formaflight', 'ni');
+            if (!v1) {
+                return false;
+            };
         });
+        changeFocus("#EtCityOrigFL,#EtDestinyFL", MsjAirport);
         jQuery("#EtFType").change(function() {
             if (jQuery(this).val() == "round") {
                 jQuery("#formaflight .EtDateToGN").parent().show();
@@ -338,8 +344,7 @@ jQuery(document).ready(function() {
 
         //autocompletado origen vuelos
         jQuery("#EtCityOrigFL").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cachePQ) {
                     response(cachePQ[request.term]);
@@ -349,6 +354,7 @@ jQuery(document).ready(function() {
 
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSVuelos",
                     data: {
                         Lenguaje: IDioMA,
                         ItemTypes: "A:10",
@@ -385,8 +391,7 @@ jQuery(document).ready(function() {
         };
         //autocompletado destino vuelos
         jQuery("#EtDestinyFL").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cachePQ) {
                     response(cachePQ[request.term]);
@@ -396,9 +401,10 @@ jQuery(document).ready(function() {
 
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSVuelos",
                     data: {
                         PalabraBuscada: request.term,
-                        Lenguaje: "esp",
+                        Lenguaje: IDioMA,
                         ItemTypes: "A:10",
                         Filters: "",
 
@@ -436,19 +442,17 @@ jQuery(document).ready(function() {
 
     if ($("#formacar").length === 1) {
         jQuery('#formacar').submit(function() {
-            return (ValidateHotel('formacar', 'cityco', MsjDestinO, AltMsjDestinO));
-        });
-        jQuery('#formacar').submit(function() {
-            return (restrictCar30Days());
-        });
-        jQuery('#formacar').submit(function() {
-            return (restrictCar24Hours());
+            var v1 = ValidateHotel('formacar', 'cityco', MsjDestinO, AltMsjDestinO);
+            var v2 = restrictCar30Days();
+            var v3 = restrictCar24Hours();
+            if (v1 == false || v2 == false || v3 == false) {
+                return false;
+            }
+
         });
         //autocompletado origen autos
-
         jQuery("#cityco").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cacheA) {
                     response(cacheA[request.term]);
@@ -457,6 +461,7 @@ jQuery(document).ready(function() {
                 jQuery.ajax({
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSAutos",
                     data: {
                         Lenguaje: IDioMA,
                         ItemTypes: "R:10",
@@ -498,8 +503,7 @@ jQuery(document).ready(function() {
 
         //autocompletado destino autos
         jQuery("#cityib").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cacheA) {
                     response(cacheA[request.term]);
@@ -508,6 +512,7 @@ jQuery(document).ready(function() {
                 jQuery.ajax({
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSAutos",
                     data: {
                         Lenguaje: IDioMA,
                         ItemTypes: "R:10",
@@ -559,12 +564,14 @@ jQuery(document).ready(function() {
         jQuery("#formatour .EtDateFromGN").datepicker("option", {
             beforeShowDay: null
         }); //,onDate:null
+        changeFocus("#formacar input[name=nu],#formacar input[name=no]", MsjDestinO);
     }
     // Config de form traslados
     if ($("#formatransfer").length === 1) {
         jQuery('#formatransfer').submit(function() {
             return (ValidateHotel('formatransfer', 'EtHotel', FalseHotel, MsjHotel));
         });
+        changeFocus("#EtHotel", FalseHotel);
         jQuery("#EtTypeId").change(function() {
             if (jQuery(this).val() == "R") {
                 jQuery("#formatransfer .EtDateToGN").parent().show();
@@ -590,8 +597,7 @@ jQuery(document).ready(function() {
         });
         //autocompletado traslado
         jQuery("#EtHotel").autocomplete({
-            minLength: 2,
-            delay: 1000,
+            minLength: 3,
             source: function(request, response) {
                 if (request.term in cacheT) {
                     response(cacheT[request.term]);
@@ -600,6 +606,7 @@ jQuery(document).ready(function() {
                 jQuery.ajax({
                     url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
                     dataType: "jsonp",
+                    jsonpCallback: "ETSTraslados",
                     data: {
 
                         PalabraBuscada: request.term,
@@ -651,11 +658,10 @@ jQuery(document).ready(function() {
         });
     }
 
-      //Modificar el foco
-    changeFocus("#EtDestinyHtl", MsjDestinO);
-    changeFocus("#EtHotel", FalseHotel);
-    changeFocus("#EtCityOrig,#EtDestinyPkl,#EtCityOrigFL,#EtDestinyFL", MsjAirport);
-    changeFocus("#formacar input[name=nu],#formacar input[name=no]", MsjDestinO);
+    jQuery(window).unload(function() {
+        jQuery(".etWContainer").find("[name*=ad],[name*=ac],[name*=ch]").prop("disabled", false)
+    });
+    //Modificar el foco
 
 });
 
@@ -832,7 +838,7 @@ function NumeroNoches(date) {
     jQuery(".Noches").remove();
 
     var Formanoches = jQuery(this).parents("form").attr('id');
-    if((Formanoches=="formahotel" ) || (Formanoches=="formapackage" ) ){
+    if ((Formanoches == "formahotel") || (Formanoches == "formapackage")) {
 
         var fin = jQuery('#' + Formanoches + ' .EtDateToGN').datepicker("getDate").getTime();
         inicionoches = jQuery('#' + Formanoches + ' .EtDateFromGN').datepicker("getDate").getTime();
@@ -854,11 +860,11 @@ function NumeroNoches(date) {
 //Muestra numero de noches al pocisionar el mouse sobre un dia
 
 function NumeroNochesHover() {
-   
-    var idform=$.datepicker._curInst.input.parents("form").attr("id");
-    if((idform=="formahotel" ) || (idform=="formapackage" ) ){
+
+    var idform = $.datepicker._curInst.input.parents("form").attr("id");
+    if ((idform == "formahotel") || (idform == "formapackage")) {
         var datehover = $(this).parent().data(), //Se obtiene mes y año del dia seleccionado
-        diahover = parseInt($(this).html());
+            diahover = parseInt($(this).html());
         var fechahover = new Date(datehover.year, datehover.month, diahover);
         fechahover = fechahover.getTime();
         fechahover = Math.ceil((fechahover - inicionoches) / 864e5);
@@ -928,7 +934,7 @@ function changeFocus(obj, text) {
     jQuery(obj).blur(function() {
 
         jQuery(this).val(inputText);
-        jQuery(this).autocomplete( "search", "" ) ;
+        jQuery(this).autocomplete("search", "");
 
     });
 
@@ -1042,6 +1048,7 @@ function restrict45Days(forma) {
         alert(Msj45Days);
         return (false);
     }
+    return true;
 }
 
 function restrictCar30Days() {
@@ -1053,6 +1060,7 @@ function restrictCar30Days() {
         alert(MsjMaxTimeCar);
         return (false);
     }
+    return true;
 }
 
 function restrictCar24Hours() {
@@ -1070,6 +1078,7 @@ function restrictCar24Hours() {
         alert(MsjMinTimeCar);
         return (false);
     }
+    return true;
 }
 
 
@@ -1092,6 +1101,7 @@ function restrictPack8People() {
         alert(MsjMaxPeoplePack);
         return false;
     }
+    return true;
 }
 //Validar vuelos y paquetes
 
@@ -1107,6 +1117,7 @@ function ValidateFLPK(forma, objdestino) {
     if (ValidateDate(forma) == false) {
         return (false);
     }
+    return true;
 }
 //Valida hotel
 
@@ -1118,4 +1129,38 @@ function ValidateHotel(forma, objdest, msjobjdest, altmsjobjdest) {
     if (ValidateDate(forma) == false) {
         return (false);
     }
+    return true;
+}
+//Selecciona el numero de personas de acuerdo al numero de habitaciones
+
+function cleanSubmit(forma) {
+    // Lee el número de habitaciones solicitadas
+    var rm = parseInt(jQuery(forma).find("[name=rm]").val());
+
+    // Deshabilita los adultos de las habitaciones que no se solicitaron
+    jQuery(forma).find("[name*=ad]").each(function(index, element) {
+        var room = parseInt(jQuery(this).attr("name").replace("ad", ""));
+        if (rm < room) {
+            jQuery(this).prop("disabled", true);
+        }
+    });
+    // Deshabilita los niños de las habitaciones que no se solicitaron
+    jQuery(forma).find("[name*=ch]").each(function(index, element) {
+        var room = parseInt(jQuery(this).attr("name").replace("ch", ""));
+        if (rm < room) {
+            jQuery(this).prop("disabled", true);
+        }
+        // Lee la cantidad de niños para esta habitación y si es cero deshabilita sus edades
+        var ch = parseInt(jQuery(forma).find("[name=ch" + room + "]").val())
+        if (ch == 0) {
+            jQuery(forma).find("[name=ac" + room + "]").prop("disabled", true)
+        }
+    });
+    // Deshabilita las edades de los niños de las habitaciones que no se solicitaron
+    jQuery(forma).find("[name*=ac]").each(function(index, element) {
+        var room = parseInt(jQuery(this).attr("name").replace("ac", ""));
+        if (rm < room) {
+            jQuery(this).prop("disabled", true);
+        }
+    });
 }
