@@ -316,10 +316,8 @@ jQuery(document).ready(function() {
     // Config de form vuelos
     if ($("#formaflight").length === 1) {
         jQuery("#formaflight").submit(function() {
-            var v1 = ValidateFLPK('formaflight', 'ni');
-            if (!v1) {
-                return false;
-            };
+           return (ValidateFLPK('formaflight', 'ni'));
+           
         });
         changeFocus("#EtCityOrigFL,#EtDestinyFL", MsjAirport);
         jQuery("#EtFType").change(function() {
