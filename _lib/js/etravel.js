@@ -751,6 +751,7 @@ function _normaliseDate(date) {
 // Funcion para sumar Fechas
 
 function addDate(date, amount, period) {
+    date=new Date(date);
     if (period == 'd' || period == 'w') {
         this._normaliseDate(date);
         date.setDate(date.getDate() + amount * (period == 'w' ? 7 : 1));
@@ -789,6 +790,8 @@ function OnSelectDate(dateSel) {
         var daysDiff = Math.ceil((dateTo - dateFrom) / 864e5);
         newdate = addDate(dateFrom, '+2', 'd'); //Nueva fecha para el input EtDateToGN
         if (dateFrom >= dateTo || daysDiff > eTMaxDays) {
+            var toMaxDate = addDate(dateFrom, eTMaxDays, 'd');
+            dateToInput.datepicker( "option", "maxDate", toMaxDate);//Se establece el rango de 29 Noches para poder poner la nueva fecha
             dateToInput.datepicker("setDate", newdate);
         } // Asignamos el nuevo valor al input EtDateToGN
     } else {
