@@ -5,6 +5,7 @@ jQuery(document).ready(function() {
 
     if ($("#formahotel").length === 1) DefVar("#formahotel");
     else DefVar("#formapackage");
+
     // Se crea evento para ejecutar funciones despues que muestra el calendario
     $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
     $.datepicker._updateDatepicker = function(inst) {
@@ -19,7 +20,7 @@ jQuery(document).ready(function() {
         numberOfMonths: 2,
         showButtonPanel: true,
         minDate: 0,
-        maxDate: "+1y",
+        maxDate: "+319d",
         beforeShowDay: RangoDias,
         beforeShow: function(input, ins) {
             if ($(input).data("oldDate") == undefined) $(input).data("oldDate", input.value)
@@ -52,7 +53,9 @@ jQuery(document).ready(function() {
         afterShow: NumeroNoches,
         onSelect: OnSelectDate
     });
+
     DefaultDate();
+    //Muestra numero de noches
     jQuery("body").on("mouseenter", "#ui-datepicker-div td a", NumeroNochesHover);
     jQuery("body").on("mouseleave", "#ui-datepicker-div td a", function() {
         var idform = $.datepicker._curInst.input.parents("form").attr("id");
@@ -78,11 +81,22 @@ jQuery(document).ready(function() {
             var v1 = ValidateHotel('formahotel', 'EtDestinyHtl', MsjDestinO, AltMsjDestinO);
             if (v1) {
                 cleanSubmit(this);
-            } else {
-                return false;
-            };
+                /*TagManager
+                    //Se retrasa el submit para que se registre el evento en tagmanager
+                    e.preventDefault();
+                    var that=this;
+                    setTimeout(function(){ that.submit() },250);
+                
+                */
+                return true;
+            }
+            return false;
+          
 
         });
+        jQuery("#formahotel .EtDateFromGN").datepicker("option", "maxDate", "+18m");
+                            
+
         changeFocus("#EtDestinyHtl", MsjDestinO);
 
         jQuery("#formahotel .rm select").change(function() {
@@ -106,6 +120,9 @@ jQuery(document).ready(function() {
         jQuery("#Age3 select").change(function() {
             setAgeCI('', 3)
         });
+        //Evitar que se realize el submit en este campo de origen
+        jQuery("#EtDestinyHtl").keypress(function(e){if ( e.which == 13 ) e.preventDefault()});
+
         //autocompletado Hotel
         jQuery("#EtDestinyHtl").autocomplete({
             minLength: 3,
@@ -154,6 +171,8 @@ jQuery(document).ready(function() {
                 jQuery("#formahotel .EtDateFromGN").focus();
                 inputText = ui.item.Label;
                 jQuery(this).val(ui.item.Label);
+               
+                jQuery("#EtDestinyHtl").blur();//Para que se limpie el input cuando se le de click
                 return false;
             }
         }).data("ui-autocomplete")._renderMenu = function(ul, items) {
@@ -184,13 +203,21 @@ jQuery(document).ready(function() {
     if ($("#formapackage").length === 1) {
 
         jQuery("#formapackage").submit(function() {
-            var v1 = ValidateFLPK('formapackage', 'dn');
+            var v1 = ValidateFLPK('formapackage', 'ni');
             var v2 = restrictPack8People();
             if (v1 && v2) {
                 cleanSubmit(this);
-            } else {
-                return false;
-            }
+                /*TagManager
+                    //Se retrasa el submit para que se registre el evento en tagmanager
+                    e.preventDefault();
+                    var that=this;
+                    setTimeout(function(){ that.submit() },250);
+                
+                */
+                return true;
+            } 
+            return false;
+            
 
         });
         jQuery("#formapackage .rm select").change(function() {
@@ -215,6 +242,10 @@ jQuery(document).ready(function() {
             setAgeCI('Pk', 3)
         });
         changeFocus("#EtCityOrig,#EtDestinyPkl", MsjAirport);
+
+         //Evitar que se realize el submit en este campo de origen
+        jQuery("#EtCityOrig").keypress(function(e){if ( e.which == 13 ) e.preventDefault()});
+
         //autocompletado origen paquetes
         jQuery("#EtCityOrig").autocomplete({
             minLength: 3,
@@ -253,6 +284,7 @@ jQuery(document).ready(function() {
                 jQuery("#EtCityOrig").val(ui.item.Label);
                 jQuery("#EtIATAob").val(ui.item.TypeID);
                 inputText = ui.item.Label;
+               // jQuery("#EtDestinyHtl").blur();//Para que se limpie el input cuando se le de click
                 jQuery("#EtDestinyPkl").focus();
                 return false;
             }
@@ -262,6 +294,9 @@ jQuery(document).ready(function() {
                 .append(jQuery("<a>").text(item.Label))
                 .appendTo(ul);
         };
+         //Evitar que se realize el submit en este campo 
+        jQuery("#EtDestinyPkl").keypress(function(e){if ( e.which == 13 ) e.preventDefault()});
+
         //autocompletado destino paquetes
         jQuery("#EtDestinyPkl").autocomplete({
             minLength: 3,
@@ -302,6 +337,9 @@ jQuery(document).ready(function() {
                 jQuery("#EtdtPk").val(ui.item.TypeID.split("|")[1]);
                 jQuery("#EtIATds").val(ui.item.TypeID.split("|")[0]);
                 inputText = ui.item.Label;
+
+                //jQuery("#EtDestinyPkl").blur();//Para que se limpie el input cuando se le de click
+
                 jQuery("#formapackage .EtDateFromGN").focus();
                 return false;
             },
@@ -321,18 +359,26 @@ jQuery(document).ready(function() {
         });
         changeFocus("#EtCityOrigFL,#EtDestinyFL", MsjAirport);
         jQuery("#EtFType").change(function() {
+            jQuery("#formaflight .EtDateToGN").datepicker("option", {
+                 
+                    onDate: null,
+                    onClose:null
+                });
             if (jQuery(this).val() == "round") {
                 jQuery("#formaflight .EtDateToGN").parent().show();
-                jQuery("#formaflight .EtDateFromGN").datepick("option", {
+                jQuery("#formaflight .EtDateFromGN").datepicker("option", {
                     onDate: RangoDias
                 });
             } else {
                 jQuery("#formaflight .EtDateToGN").parent().hide();
-                jQuery("#formaflight .EtDateFromGN").datepick("option", {
-                    onDate: null
+                jQuery("#formaflight .EtDateFromGN").datepicker("option", {
+                    onDate: null,
+                    onClose:null
                 });
             }
         });
+
+     
         jQuery("#RoomFL1 select[name=ch1]").change(function() {
             setAgeC(1, 'FL')
         });
@@ -570,27 +616,34 @@ jQuery(document).ready(function() {
             return (ValidateHotel('formatransfer', 'EtHotel', FalseHotel, MsjHotel));
         });
         changeFocus("#EtHotel", FalseHotel);
+        //Calendarios
+        jQuery("#formatransfer .EtDateFromGN").datepicker("option", {
+            minDate: 2,
+            beforeShowDay:null,
+            beforeShow:null,
+            onClose: null
+        });
+        jQuery("#formatransfer .EtDateToGN").datepicker("option", {
+            minDate: 3,
+            beforeShowDay:null,
+            beforeShow:null
+      
+        });
         jQuery("#EtTypeId").change(function() {
             if (jQuery(this).val() == "R") {
                 jQuery("#formatransfer .EtDateToGN").parent().show();
                 jQuery("#formatransfer .EtDateFromGN").parent().show();
-                jQuery("#formatransfer .EtDateFromGN,#formatransfer .EtDateToGN ").datepicker("option", {
-                    beforeShowDay: RangoDias
-                });
+               
             }
             if (jQuery(this).val() == "L") {
                 jQuery("#formatransfer .EtDateToGN").parent().hide();
                 jQuery("#formatransfer .EtDateFromGN").parent().show();
-                jQuery("#formatransfer .EtDateFromGN,#formatransfer .EtDateToGN ").datepicker("option", {
-                    beforeShowDay: null
-                });
+                
             }
             if (jQuery(this).val() == "S") {
                 jQuery("#formatransfer .EtDateToGN").parent().show();
                 jQuery("#formatransfer .EtDateFromGN").parent().hide();
-                jQuery("#formatransfer .EtDateFromGN,#formatransfer .EtDateToGN ").datepicker("option", {
-                    beforeShowDay: null
-                });
+                
             }
         });
         //autocompletado traslado
@@ -647,15 +700,9 @@ jQuery(document).ready(function() {
             jQuery("#EtType").val(jQuery(this).children("option:selected").html());
 
         }).change();
-        //Calendarios
-        jQuery("#formatransfer .EtDateFromGN").datepicker("option", {
-            minDate: 2
-        });
-        jQuery("#formatransfer .EtDateToGN").datepicker("option", {
-            minDate: 3
-        });
+       
     }
-
+    //Se activan estos inputs al salir de la pagina
     jQuery(window).unload(function() {
         jQuery(".etWContainer").find("[name*=ad],[name*=ac],[name*=ch]").prop("disabled", false)
     });
@@ -664,7 +711,7 @@ jQuery(document).ready(function() {
 });
 
 /*VARIABLES*/
-var eTMaxDays = 29;
+var eTMaxDays = 30;
 var MsjAirport, altMsjAirport, altMsjAirportr, altMsjDate, NFOrigen, NFDestino, PosadaAllIclusive, FalseHotel, FormatO, MsjAllInclusive, MsjHotel, Msj45Days, MsjMinTimeCar, MsjMaxTimeCar, IDioMA, MsjDestinO = {}, inicionoches = 0,
     noches = 0,
     inputText = "";
@@ -789,11 +836,15 @@ function OnSelectDate(dateSel) {
         dateTo = dateToInput.datepicker("getDate");
         var daysDiff = Math.ceil((dateTo - dateFrom) / 864e5);
         newdate = addDate(dateFrom, '+2', 'd'); //Nueva fecha para el input EtDateToGN
+
+     
         if (dateFrom >= dateTo || daysDiff > eTMaxDays) {
             var toMaxDate = addDate(dateFrom, eTMaxDays, 'd');
-            dateToInput.datepicker( "option", "maxDate", toMaxDate);//Se establece el rango de 29 Noches para poder poner la nueva fecha
+            dateToInput.datepicker( "option", "maxDate", toMaxDate);//Se establece el rango de 30 Noches para poder poner la nueva fecha
             dateToInput.datepicker("setDate", newdate);
         } // Asignamos el nuevo valor al input EtDateToGN
+    
+
     } else {
         dateFrom = dateFromInput.datepicker("getDate");
         dateTo = jQuery(this).datepicker("getDate");
