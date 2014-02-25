@@ -913,7 +913,7 @@ function NumeroNoches(date) {
 
 function NumeroNochesHover() {
 
-    var idform = $.datepicker._curInst.input.parents("form").attr("id");
+    var idform = $.datepicker._curInst ? $.datepicker._curInst.input.parents("form").attr("id") : $($.datepicker._lastInput).parents("form").attr("id"); // Se obtine el ID del Form de acuerdo a la version de jquery UI 10.3 o 10.4
     if ((idform == "formahotel") || (idform == "formapackage")) {
         var datehover = $(this).parent().data(), //Se obtiene mes y año del dia seleccionado
             diahover = parseInt($(this).html());
