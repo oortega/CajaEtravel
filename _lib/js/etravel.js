@@ -984,13 +984,14 @@ function changeFocus(obj, text) {
 
         inputText = $(this).val();
         jQuery(this).val("");
+        jQuery(this).autocomplete("search", "");
 
     });
 
     jQuery(obj).blur(function() {
 
         jQuery(this).val(inputText);
-        jQuery(this).autocomplete("search", "");
+        
 
     });
 
