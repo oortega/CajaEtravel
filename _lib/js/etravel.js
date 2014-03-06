@@ -606,8 +606,17 @@ jQuery(document).ready(function() {
         });
         //Calendarios
         jQuery("#formatour .EtDateFromGN").datepicker("option", {
-            beforeShowDay: null
+            beforeShowDay: null,
+            beforeShow:null,
+            onClose: null
         }); //,onDate:null
+        jQuery("#formatour .EtDateToGN").datepicker("option", {
+    
+            beforeShowDay:null,
+            beforeShow:null,
+             onClose: null
+      
+        });
         changeFocus("#formacar input[name=nu],#formacar input[name=no]", MsjDestinO);
     }
     // Config de form traslados
