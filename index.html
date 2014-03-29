@@ -23,8 +23,6 @@
 						<input type="hidden" name="ln" value="esp" />
 						<input type="hidden" name="cu" value="pe" />
 						<input type="hidden" value="" 		name="ds" 	id="Etdt"/>
-						<input type="hidden" value="" 		name="ht" 	id="EtHt"/>
-
 						<input type="hidden" value="" 		name="ac1"	id="EtNumAges1"/> 
 						<input type="hidden" value="" 		name="ac2"	id="EtNumAges2"/>
 						<input type="hidden" value="" 		name="ac3"	id="EtNumAges3"/>
@@ -248,11 +246,9 @@
 					<div class="etWHide">
 						<input type="hidden" value="esp" name="ln" />
 						<input type="hidden" value="TEST" name="af" />
-						<input type="hidden" name="cu" value="" />
+						<input type="hidden" name="cu" value="pe" />
 						<input type="hidden" value="" name="ob" id="EtIATAobFl" />
 						<input type="hidden" value="" name="ib" id="EtIATAibFl" />
-						<input type="hidden" value="0" id="EtWthLea" />
-						<input type="hidden" value="0" id="EtWthArr" />
 						<input type="hidden" name="ac1" id="EtFLNumAges1" value="" />
 					</div>
 					<div class="etWrow">
@@ -318,7 +314,7 @@
 					</div>
 					<div class="etWHide">
 						<input type="hidden" name="Af" value="TEST"/>
-						<input type="hidden" name="cu" value=""/>
+						<input type="hidden" name="cu" value="pe"/>
 						<input type="hidden" name="ln" value="esp"/>
 						<input type="hidden" name="do" value="" id="do" />
 						<input type="hidden" name="pu" value="" id="pu" />
@@ -329,7 +325,7 @@
 					</div>
 					<div class="etWrow2">
 						<label class="spMs">Entrega:</label>
-						<input name="sd" type="text" class="cal EtDateFromGN"/>
+						<input name="sd" type="text" readonly="readonl" class="cal EtDateFromGN"/>
 					</div>
 					<div class="etWrow2">
 						<label class="spTT2">Horario:</label>
@@ -366,7 +362,7 @@
 					</div>
 					<div class="etWrow2">
 						<label class="spMs">Fecha de Regreso:</label>
-						<input name="ed" type="text" class="cal EtDateToGN"/>
+						<input name="ed" type="text" class="cal EtDateToGN" readonly="readonl" />
 					</div>
 					<div class="etWrow2">
 						<label class="spTT2">Hora de Regreso:</label>
@@ -418,11 +414,8 @@
 					<div class="etWHide">
 					    <input type="hidden" name="af" value="TEST"/>
 					    <input type="hidden" name="ln" value="esp"/>
-					    <input type="hidden" name="cu" value="" />
-					    <input type="hidden" name="ol" value="0" id="EtOrLt" />
-					    <input type="hidden" name="sl" value="Asc" id="EtStLt" />
-					    <input type="hidden" name="pg" value="1" id="EtPg" />
-					    <input type="hidden" name="rc" value="10" id="EtRc" />
+					    <input type="hidden" name="cu" value="pe" />
+					
 					</div>
 					<div class="etWrow">
 						<label>Destino</label>
@@ -495,7 +488,7 @@
 					<div class="etWHide">
 						<input type="hidden" value="TEST" name="Af"/>
 						<input type="hidden" value="esp" name="ln" />
-						<input type="hidden" value="" name="cu" />
+						<input type="hidden" value="pe" name="cu" />
 						<input type="hidden" name="tnm" value="" id="EtType" />
 						<input type="hidden" name="ht" value="" id="EtHotelId" />
 						<input type="hidden" name="ctf" value="" id="EtCountryId" />
