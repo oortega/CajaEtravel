@@ -63,7 +63,7 @@ Actualizacion: Oscar Ortega 27/03/2014
 .ui-datepicker .selectedFrom a:after{content:""; position: absolute; top: 0; right:0; border-top: 10.5px solid #FFF; border-bottom: 10.5px solid #FFF; border-left: 9px solid transparent  }
 .ui-datepicker .selectedTo a{  line-height:20px; background: #198BCC;  color: #fff !important; position: relative; text-indent: 3px; font-weight: bold}
 .ui-datepicker .selectedTo a:after{content:""; position: absolute; top: 0; left:0; border-top: 10.5px solid #FFF; border-bottom: 10.5px solid #FFF; border-right: 9px solid transparent  }
-.ui-datepicker .selectedFrom span{ background: #a6cc43; color: #fff !important;  position: relative; text-indent: -7px;  font-weight: bold; width: 23px; height: 16px;}
+.ui-datepicker .selectedFrom span{ background: #198BCC; color: #fff !important;  position: relative; text-indent: -7px;  font-weight: bold; }
 .ui-datepicker .selectedFrom span:after{content:""; position: absolute; top: 0; right:0; border-top: 10.5px solid #FFF; border-bottom: 10.5px solid #FFF; border-left: 9px solid transparent  }
 .ui-datepicker .selectedFrom {opacity: 1!important}
 /*Termina*/
