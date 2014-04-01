@@ -357,7 +357,7 @@
      if ($("#formaflight").length === 1) {
 
          jQuery("#formaflight").submit(function(e) {
-            var v1 = ValidateFLPK('formapackage', 'ni');
+            var v1 = ValidateFLPK('formaflight', 'ni');
              var v2 = restrictFlight6People();
              if (v1 && v2) {
                  cleanSubmit(this);
