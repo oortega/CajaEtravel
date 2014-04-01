@@ -202,7 +202,7 @@
          jQuery("#formapackage .EtDateFromGN").datepicker("option", "maxDate", "+319d");
          jQuery("#formapackage").submit(function(e) {
              var v1 = ValidateFLPK('formapackage', 'ni');
-             var v2 = restrictPack8People();
+             var v2 = restrictPack6People();
              if (v1 && v2) {
                  cleanSubmit(this);
                  /*TagManager
@@ -355,9 +355,22 @@
      }
      // Config de form vuelos
      if ($("#formaflight").length === 1) {
-         jQuery("#formaflight").submit(function(e) {
-             return (ValidateFLPK('formaflight', 'ni'));
 
+         jQuery("#formaflight").submit(function(e) {
+            var v1 = ValidateFLPK('formapackage', 'ni');
+             var v2 = restrictFlight6People();
+             if (v1 && v2) {
+                 cleanSubmit(this);
+                 /*TagManager
+                    //Se retrasa el submit para que se registre el evento en tagmanager
+                    e.preventDefault();
+                    var that=this;
+                    setTimeout(function(){ that.submit() },250);
+                
+                */
+                 return true;
+             }
+             return false;            
          });
          changeFocus("#EtCityOrigFL,#EtDestinyFL", MsjAirport);
          jQuery("#formaflight .EtDateFromGN").datepicker("option", {
@@ -786,7 +799,7 @@
          Msj45Days = "No se pueden reservar m\u00E1s de 45 d\u00edas.";
          MsjMinTimeCar = "La fecha y hora de devoluci\u00F3n no puede ser menor a 24 horas a partir de la fecha de reservaci\u00F3n.";
          MsjMaxTimeCar = "La fecha y hora de devoluci\u00F3n no puede ser mayor a 30 días a partir de la fecha de reservaci\u00F3n.";
-         MsjMaxPeoplePack = "El n\u00famero m\u00e1ximo permitido por reservaci\u00f3n es de 8 personas, por favor corrija e intente nuevamente su b\u00fasqueda";
+         MsjMaxPeoplePack = "El n\u00famero m\u00e1ximo permitido por reservaci\u00f3n es de 6 personas, por favor corrija e intente nuevamente su b\u00fasqueda";
          MsjNoResults = "No se encontraron resultados";
          IDioMA = "esp";
          Nighttext = "Noches";
@@ -811,7 +824,7 @@
          Msj45Days = "Voc\u00ea n\u00e3o pode reservar mais de 45 dias";
          MsjMinTimeCar = "A data e hora de retorno n\u00e3o pode ser inferior a 24 horas ap\u00F3s a data da reserva.";
          MsjMaxTimeCar = "A data e hora de retorno n\u00e3o pode ser superior a 30 dias ap\u00F3s a data da reserva.";
-         MsjMaxPeoplePack = "O n\u00famero m\u00e1ximo permitido por reserva \u00e9 de 8 pessoas, por favor, corrija e tente novamente a sua pesquisa";
+         MsjMaxPeoplePack = "O n\u00famero m\u00e1ximo permitido por reserva \u00e9 de 6 pessoas, por favor, corrija e tente novamente a sua pesquisa";
          MsjNoResults = "Nenhum resultado foi encontrado";
          IDioMA = "por";
          Nighttext = "Noites";
@@ -837,7 +850,7 @@
          Msj45Days = "You can not book more than 45 days";
          MsjMinTimeCar = "The date and time of return can not be less than 24 hours after the reservation date.";
          MsjMaxTimeCar = "The date and time of return can not be greater than 30 days from the reservation date.";
-         MsjMaxPeoplePack = "The maximum number allowed per reservation is 8 people, please correct and try your search again";
+         MsjMaxPeoplePack = "The maximum number allowed per reservation is 6 people, please correct and try your search again";
          MsjNoResults = "No results were found";
          IDioMA = "ing";
          Nighttext = "Nights";
@@ -1208,8 +1221,18 @@
      return true;
  }
 
+function restrictFlight6People() {
+     var ad1 = parseInt($("#formaflight select[name=ad1]").val());
+     var ch1 = parseInt($("#formaflight select[name=ch1]").val());
+     var sum = ad1 + ch1;
+     if (sum > 6) {
+         alert(MsjMaxPeoplePack);
+         return false;
+     }
+     return true;
+ }
 
- function restrictPack8People() {
+ function restrictPack6People() {
      var rooms = parseInt($("#formapackage .rm select").val());
      var ad1 = parseInt($("#formapackage select[name=ad1]").val());
      var ad2 = parseInt($("#formapackage select[name=ad2]").val());
@@ -1224,7 +1247,7 @@
      if (rooms > 2) {
          sum += ad3 + ch3
      }
-     if (sum > 8) {
+     if (sum > 6) {
          alert(MsjMaxPeoplePack);
          return false;
      }
