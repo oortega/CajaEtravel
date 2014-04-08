@@ -515,9 +515,8 @@
      if ($("#formacar").length === 1) {
          jQuery('#formacar').submit(function(e) {
              var v1 = ValidateHotel('formacar', 'cityco', MsjDestinO, AltMsjDestinO);
-             var v2 = restrictCar30Days();
-             var v3 = restrictCar24Hours();
-             if (v1 == false || v2 == false || v3 == false) {
+             var v2 = restrictCar24Hours();
+             if (v1 == false  || v2 == false) {
                  return false;
              }
 
@@ -1191,17 +1190,8 @@
      return true;
  }
 
- function restrictCar30Days() {
-     var dateTo = jQuery('#formacar .EtDateToGN').datepicker("getDate");
-     var dateFrom = jQuery('#formacar .EtDateFromGN').datepicker("getDate");
-     var daysDiff = Math.round((dateTo - dateFrom) / 864e5);
 
-     if (daysDiff >= 30) {
-         alert(MsjMaxTimeCar);
-         return (false);
-     }
-     return true;
- }
+
 
  function restrictCar24Hours() {
      var dateFrom = jQuery('#formacar .EtDateFromGN').datepicker("getDate");
