@@ -1,10 +1,10 @@
 
-.etWContainer { width:245px; overflow:hidden; margin:0px; padding:0px; border:2px solid #0081CA; background-color:#F7F7F7; font-family:	Arial,Helvetica,sans-serif; padding:0px; font-size:11px; }
-.etWContainer .etWtabs { width:245px; height:25px; line-height:25px; float:left; display:inline-block; margin-left:2px; overflow:hidden; }
-.etWContainer .etWtabs a { display:inline-block; color:#FFF; float:left; font-size:9px; font-weight:bold; padding-left:2px; padding-right:3px; text-decoration:none; height:25px; background-color:#198BCC;  margin-left:1px; }
-.etWContainer .etWtabs .active,.etWContainer .etWtabs a:hover { background-color:#F5F5F5; color:#000; font-size:9px; }
-.etWContainer .etWtabs .prim { margin-left:0px; }
-.etWContainer .etWforms { float:left; display:inline-block; margin-left:5px; width:235px;  }
+.etWContainer { width:245px; overflow:hidden; margin:0px; padding:0px; padding:0px; font-size:11px; }
+.etWContainer .etWtabs { width:245px; height: 24px; line-height:25px; float:left; border-bottom: 2px solid #198BCC;}
+.etWContainer .etWtabs a { margin: 0px 1px; display:inline-block; color:#FFF; float:left; font-size:9px; font-weight:bold; text-decoration:none; height:25px; background-color: #198BCC; padding: 0px 2px; border: 1px solid #198BCC; border-bottom: none;}
+.etWContainer .etWtabs .active,.etWContainer .etWtabs a:hover { background-color: #F7F7F7; color:#000; font-size:9px; }
+.etWContainer .etWtabs .prim { margin-left: 5px; }
+.etWContainer .etWforms { float:left; display:inline-block; width: 241px; border: 2px solid #198BCC; border-top: none;}
 .etWContainer .etWforms form { width:215px; float:left; overflow:hidden; margin:0px 10px; padding:10px 0px; color:#333; display:inline-block; }
 .etWContainer .etWforms form .etWHide { display:none; }
 .etWContainer .etWforms form .etWrow { width:215px; float:left; overflow:hidden; margin-bottom:10px; }
@@ -39,20 +39,19 @@
 .etWContainer .etWforms form .button input { width:124px; height:30px; padding:0px; padding-bottom:4px; line-height:31px; color:#FFF; display:inline-block; border:0px; background: #198BCC; font-size:15px; cursor:pointer; }
 .etWContainer .etWforms form .button input:hover { background:#25A7F1; } 
 
-.etWContainer .etWforms form .etWrow #EtFType,.etWContainer .etWforms form .etWrow #EtTypeId,.etWContainer .etWforms form .etWrow #EtSelectDest ,.etWContainer .etWforms form .etWrow #Tipo_Carro { width:212px; height:22px; line-height:22px; float:left; color:#666; border:1px solid #DEDEDE; font-size:11px; }
+.etWContainer .etWforms form .etWrow #EtFType,.etWContainer .etWforms form .etWrow #EtTypeId,.etWContainer .etWforms form .etWrow #EtSelectDest ,.etWContainer .etWforms form .etWrow #Tipo_Carro { width: 213px; height:22px; line-height:22px; float:left; color:#666; border:1px solid #DEDEDE; font-size:11px; }
 .etWContainer .etWforms form .etWrow2 #Hora_Entrega, .etWContainer .etWforms form .etWrow2 #Hora_Devolucion { float:left; }
 .etWContainer .etWSelect {position: relative; display:inline-block;}
 .etWContainer .etWSelect * {top: 0; left: 0; cursor: pointer;}
 .etWContainer .etWSelect, .etWContainer .etWSelect select, .etWContainer .etWSelect span { color:#666; font-family: Arial,Helvetica,sans-serif; font-size:11px; text-indent: 5px;}
 .etWContainer .etWSelect select { opacity: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0);  position: absolute; z-index: 5; }
-.etWContainer .etWSelect span {display:inline-block; position: absolute; z-index: 4; }
-.etWContainer .etWSmall, .etWContainer .etWSmall select, .etWContainer .etWSmall span {width: 40px; height: 22px; line-height: 22px;}
-.etWContainer .etWSmall span {background: no-repeat url('../img/select-small.png');}
-.etWContainer .etWLarge, .etWContainer .etWLarge select, .etWContainer .etWLarge span {width: 212px; height: 22px; line-height: 22px;}
-.etWContainer .etWLarge span {background: no-repeat url('../img/select-large.png');}
-.etWContainer .etWMedium, .etWContainer .etWMedium select, .etWContainer .etWMedium span {width: 106px; height: 26px; line-height: 26px;}
-.etWContainer .etWMedium span {background: no-repeat url('../img/select-medium.png');}
-
+.etWContainer .etWSelect span {display:inline-block; position: absolute; z-index: 4; background: #ffffff url('../img/select.png') no-repeat center right ;border: 1px solid #DEDEDE;}
+.etWContainer .etWSmall, .etWContainer .etWSmall select {width: 40px; height: 22px; line-height: 22px;}
+.etWContainer .etWSmall span {width: 38px; height: 20px; line-height: 22px;}
+.etWContainer .etWLarge, .etWContainer .etWLarge select {width: 213px; height: 22px; line-height: 22px;}
+.etWContainer .etWLarge span {width: 211px; height: 20px; line-height: 22px;}
+.etWContainer .etWMedium, .etWContainer .etWMedium select {width: 106px; height: 26px; line-height: 26px;}
+.etWContainer .etWMedium span {width: 104px; height: 24px; line-height: 26px;}
 
 
 
