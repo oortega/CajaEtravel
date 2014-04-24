@@ -2,9 +2,9 @@
 .etWContainer { width:245px; overflow:hidden; margin:0px; padding:0px; padding:0px; font-size:11px; }
 .etWContainer .etWtabs { width:245px; height: 25px; line-height:25px; float:left; border-bottom: 2px solid #198BCC;}
 .etWContainer .etWtabs a { margin: 0px 1px; display:inline-block; color:#FFF; float:left; font-size:9px; font-weight:bold; text-decoration:none; height:25px; background-color: #198BCC; padding: 0px 1px; border: 2px solid #198BCC; border-bottom: none;}
-.etWContainer .etWtabs .active,.etWContainer .etWtabs a:hover { background-color: #F7F7F7; color:#000; font-size:9px; }
+.etWContainer .etWtabs .active,.etWContainer .etWtabs a:hover { background-color: #fff; color:#000; font-size:9px; }
 .etWContainer .etWtabs .prim { margin-left: 0px; }
-.etWContainer .etWforms { float:left; display:inline-block; width: 241px; border: 2px solid #198BCC; border-top: none;}
+.etWContainer .etWforms { float:left; display:inline-block; width: 241px; border: 2px solid #198BCC; border-top: none; background: #fff;}
 .etWContainer .etWforms form { width:215px; float:left; overflow:hidden; margin:0px 10px; padding:10px 0px; color:#333; display:inline-block; }
 .etWContainer .etWforms form .etWHide { display:none; }
 .etWContainer .etWforms form .etWrow { width:215px; float:left; overflow:hidden; margin-bottom:10px; }
