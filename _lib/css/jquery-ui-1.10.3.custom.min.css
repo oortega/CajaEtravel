@@ -8,7 +8,7 @@ Actualizacion: Oscar Ortega 27/03/2014
 
 */
 /*Autocomplete*/
-.ui-autocomplete { overflow:hidden; position: relative; z-index: 6; width: 358px !important; background: #eee; color: #FFF; font-size: 11px; font-family: Tahoma, Arial, Verdana; margin: 0px; padding: 0px; border: 1px dotted #d4aa00; text-align: left; border-radius: 0; -moz-border-radius: 0; -web-kit-border-radius: 0; list-style-type: none;}
+.ui-autocomplete { overflow:hidden; position: absolute; z-index: 6; width: 358px !important; background: #eee; color: #FFF; font-size: 11px; font-family: Tahoma, Arial, Verdana; margin: 0px; padding: 0px; border: 1px dotted #d4aa00; text-align: left; border-radius: 0; -moz-border-radius: 0; -web-kit-border-radius: 0; list-style-type: none;}
 .ui-autocomplete .ui-menu-item { list-style: none; }
 .ui-autocomplete .ui-menu-item a { display: inline-block; color: #806600; padding: 3px 3px; width: 352px; cursor: pointer; line-height: 15px; border-bottom: 1px dotted #d4aa00; border-radius: 0; -moz-border-radius: 0; -web-kit-border-radius: 0; }
 .ui-autocomplete .ui-menu-item a:hover { color: #ffffff; background: #1C94C4; }
