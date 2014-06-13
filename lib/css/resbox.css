@@ -1,10 +1,10 @@
-.etWContainer { width:245px; overflow:hidden; margin:0px; padding:0px; padding:0px; font-size:11px; font-family:    Arial,Helvetica,sans-serif; }
-.etWContainer .etWtabs { width:247px; height: 25px; line-height:25px; float:left; border-bottom: 2px solid #198BCC;}
-.etWContainer .etWtabs a { margin: 0px 1px; display:inline-block; color:#FFF; float:left; font-size:9px; font-weight:bold; text-decoration:none; height:25px; background-color: #198BCC; padding: 0px ; border: 2px solid #198BCC; border-bottom: none;}
+.etWContainer { width: 243px; overflow:hidden; margin:0px; padding:0px; padding:0px; font-size:11px; font-family:	Arial,Helvetica,sans-serif; }
+.etWContainer .etWtabs { width: 243px; height: 25px; line-height:25px; float:left; border-bottom: 1px solid #198BCC;}
+.etWContainer .etWtabs a { margin: 0px 1px; display:inline-block; color:#FFF; float:left; font-size:9px; font-weight:bold; text-decoration:none; height:25px; background-color: #198BCC; padding: 0px 1px; border: 1px solid #198BCC; border-bottom: none; text-align: center; white-space: nowrap; overflow: hidden;}
 .etWContainer .etWtabs .active,.etWContainer .etWtabs a:hover { background-color: #fff; color:#000; font-size:9px; }
-.etWContainer .etWtabs .prim { margin-left: 0px; width: 29px}
-.etWContainer .etWforms { float:left; display:inline-block; width: 241px; border: 2px solid #198BCC; border-top: none; background: #fff;}
-.etWContainer .etWforms form { width:215px; float:left; overflow:hidden; margin:0px 10px; padding:10px 0px; color:#333; display:inline-block; }
+.etWContainer .etWtabs .prim { margin-left: 0px}
+.etWContainer .etWforms { float:left; display:inline-block; width: 241px; border: 1px solid #198BCC; border-top: none; background: #fff;}
+.etWContainer .etWforms form { width:215px; float:left; overflow:hidden; margin: 0px 13px; padding:10px 0px; color:#333; display:inline-block; }
 .etWContainer .etWforms form .etWHide { display:none; }
 .etWContainer .etWforms form .etWrow { width:215px; float:left; overflow:hidden; margin-bottom:10px; }
 .etWContainer .etWforms form .EtBxLine { width:215px; float:left; overflow:hidden; height:0px; border-top:1px solid #CCCCCC; border-bottom:1px solid #FFFFFF; margin-bottom:10px;  }
