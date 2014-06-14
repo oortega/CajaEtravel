@@ -1,0 +1,46 @@
+.paginador {
+float:left;
+width:99%;
+text-align:center;
+margin:0 auto 15px auto;
+}
+
+.pagination {
+display:inline-block;
+margin-left:auto;
+margin-right:auto;
+}
+
+.name-box {
+font-size:12px;
+border:1px solid #ddd;
+border-radius:5px;
+padding:10px;
+}
+
+.spacer {
+clear:both;
+height:10px;
+}
+
+.page,.prev,.next {
+background:#219ced;
+ 
+border-radius:5px;
+color:#FFF;
+display:inline-block;
+font-size:.75em;
+text-decoration:none;
+padding:3px 5px;
+}
+
+.page.disabled,.prev.disabled,.next.disabled {
+color:#fff;
+background:#bebebe;
+cursor:default;
+}
+
+.page:hover,.prev:hover,.next:hover,.page.current {
+background:#fff;
+color:#000;
+}
