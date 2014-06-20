@@ -310,9 +310,8 @@
                     //Se retrasa el submit para que se registre el evento en tagmanager
                     e.preventDefault();
                     var that=this;
-                    setTimeout(function(){ that.submit() },250);
-                
-                */
+                    setTimeout(function(){ that.submit() },250);                
+                    */
                     return true;
                 }
                 return false;
@@ -342,7 +341,6 @@
                     $("#formaflight .EtDateToGN").parent().hide();
                 }
             });
-
 
             $("#RoomFL1 select[name=ch1]").change(function () { setAgeC(1, 'FL') });
             $("#AgeFL1 select").change(function () { setAgeCI('FL', 1) });
@@ -454,7 +452,6 @@
                 if (v1 == false || v2 == false) {
                     return false;
                 }
-
             });
 
             $("#cityco,#cityib").keypress(function (e) { if (e.which == 13) e.preventDefault() });
@@ -630,7 +627,6 @@
                     $("#formatransfer .EtDateToGN").parent().show();
                     $("#formatransfer .EtDateFromGN").parent().hide();
                 }
-
             });
 
             $("#EtHotel").keypress(function (e) { if (e.which == 13) e.preventDefault() });
@@ -760,7 +756,7 @@
             AltMsjDestinO = "Please enter a city";
             MsjAirport = "Enter the name of the city";
             altMsjAirport = "Please enter the name of the city.";
-            altMsjAirportr = "Please select an arrival airport.";
+            altMsjAirportr = "Please enter the name of the city.";
             altMsjDate = "Please select a date";
             NFOrigen = "Enter the departure airport.";
             NFDestino = "Specify airport Return";
@@ -923,9 +919,6 @@
                 $(".Noches").text(noches + " " + Nighttext);
             }
         }
-
-
-
     }
 
     function ValidateDate(forma) {
