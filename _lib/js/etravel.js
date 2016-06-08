@@ -564,7 +564,7 @@
         // Config de form tours
         if ($("#formatour").length === 1) {
             $('#formatour').submit(function (e) { 
-                return (ValidateDate('formatour')); 
+                return (ValidateHotel('formatour', 'EtDestinyNameTour', MsjDestinO, AltMsjDestinO)); 
             });
 
             $("#formatour .EtDateFromGN, #formatour .EtDateToGN").datepicker("option", {
@@ -574,6 +574,75 @@
             });
 
             $("#formatour .EtDateToGN").datepicker("option", { "maxDate": "+1y+1d" });
+
+            changeFocus("#EtDestinyNameTour");
+            $("#EtDestinyNameTour").autocomplete({
+                minLength: 3,
+                source: function (request, response) {
+                    $.ajax({
+                        url: "http://ajax.e-tsw.com/searchservices/getSearchJson.aspx",
+                        dataType: "jsonp",
+                        data: {
+                            Lenguaje: IDioMA,
+                            ItemTypes: "D:10,T:5",
+                            Filters: "",
+                            PalabraBuscada: request.term
+                        },
+                        success: function (data) {
+                            if (data.totalResultsCount == 0) {
+                                data.results = [{
+                                    Label: MsjNoResults,
+                                    Type: null
+                                }]; // Cuando no hay resultados agrega este item para que muestre el mensaje en el autocomplete
+                            }
+                            response(data.results);
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    if (!ui.item.Type) {
+                        $(this).val(""); // Cuando no hay resultados solo limpia la entrada
+                        return false;
+                    }
+
+                    if (ui.item.Type == "D") {
+                        $("#EtDestinyId").val(ui.item.TypeID);
+                        $("#EtIdTour").val(0);
+                        $("#EtIdsTour").val(0);
+                    } else {
+                        $("#EtDestinyId").val(0);
+                        $("#EtIdTour").val(ui.item.TypeID);
+                        $("#EtIdsTour").val(ui.item.TypeID);
+                    }
+                    inputText = ui.item.Label;
+                    $(this).val(ui.item.Label);
+
+                    $(this).blur(); //Para que se limpie el input cuando se le de click
+                    return false;
+                }
+            }).data("ui-autocomplete")._renderMenu = function (ul, items) {
+                var self = this, currentCategory = "";
+                $.each(items, function (index, item) {
+                    var encabezado = "";
+                    if (item.Type == "D") {
+                        encabezado = '<span>Destinos</span>';
+                    } else {
+                        encabezado = '<span>Tours</span>';
+                    }
+                    if (item.Type && item.Type != currentCategory) { // si hay resultados y si es otra categoía imprime los resultados
+                        ul.append("<li class='ui-autocomplete-category'>" + encabezado + "</li>");
+                        currentCategory = item.Type;
+                    }
+                    self._renderItemData(ul, item);
+                });
+            }
+            $("#EtDestinyNameTour").data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .data("item.autocomplete", item)
+                    .append($("<a>").text(item.Label))
+                    .appendTo(ul);
+            }
+
         }
         // Config de form traslados
         if ($("#formatransfer").length === 1) {
@@ -646,7 +715,7 @@
                             PalabraBuscada: request.term,
                             Lenguaje: IDioMA,
                             ItemTypes: "H:10",
-                            Filters: "S|1"
+                            Filters: ""
                         },
                         success: function (data) {
                             if (data.totalResultsCount == 0) {
